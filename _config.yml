@@ -1,0 +1,10 @@
+title:        Herman Bergwerf's blog
+email:        hermanbergwerf@gmail.com
+description:  Sometimes I write posts here, but not very often.
+
+# Build settings
+url:       ""
+base_url:  ""
+markdown:  kramdown
+plugins:
+- jekyll-feed

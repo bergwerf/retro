@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+{% include head.html %}
+<body>
+<div class="content">
+  {{ content }}
+</div>
+<div id="neon-horizon">
+  <script type="text/javascript">
+    // Put some random stars here.
+    var n = 5 + Math.round(Math.random() * 20);
+    var pad = [.05, .05, .05, .4];
+    for (var i = 0; i < n; i++) {
+      var randx = Math.random();
+      var randy = Math.random();
+
+      // Higher probability towards edges.
+      randx = Math.atan(8 * (randx - .5)) / 2.7 + .5;
+
+      // Star coordinates in percentages.
+      var x = (pad[0] + randx * (1 - pad[0] - pad[2])) * 100;
+      var y = (pad[1] + randy * (1 - pad[1] - pad[3])) * 100;
+      
+      // Star scale.
+      var s = .2 + Math.random() * .5;
+
+      // Write to document.
+      var str = '<div class="blinking-star $d" style="left: $x%; top: $y%; transform: scale($s);"></div>';
+      str = str.replace('$x', '' + x);
+      str = str.replace('$y', '' + y);
+      str = str.replace('$s', '' + s);
+      str = str.replace('$d', 'star-anim' + i);
+      document.write(str);
+    }
+  </script>
+</div>
+<div id="neon-grid"></div>
+</body>
+</html>

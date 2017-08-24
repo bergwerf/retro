@@ -1,0 +1,119 @@
+@import 'colors';
+
+#neon-grid {
+  z-index: -2;
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 18px,
+      $neon-primary 20px,
+      transparent 22px),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 8px,
+      $neon-primary 10px,
+      transparent 12px);
+
+  transform: perspective(120px) rotateX(70deg) scaleX(4) translateZ(-100px);
+  //animation: grid-forward .3s infinite linear;
+}
+
+/*@keyframes grid-forward {
+  0%   { background-position: 0px 0px; }
+  100% { background-position: 0px 26px; }
+}*/
+
+#neon-horizon {
+  z-index: -1;
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 40%;
+
+  background: linear-gradient(black 85%, transparent)
+}
+
+$star-extend-width: 4px;
+$star-extend-length: 30px;
+$star-center-width: 14px;
+
+.blinking-star {
+  position: absolute;
+
+  width: $star-extend-width;
+  height: $star-extend-length;
+
+  background: linear-gradient(blue, white, blue);
+  transform: scale(0.5);
+
+  &:before {
+    content: '';
+    position: absolute;
+
+    top: ($star-extend-length - $star-extend-width) / 2;
+    left: -(($star-extend-length - $star-extend-width) / 2);
+    width: $star-extend-length;
+    height: $star-extend-width;
+
+    background: linear-gradient(90deg, blue, white, blue);
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+
+    top: $star-extend-length / 2 - $star-center-width / 2;
+    left: $star-extend-width / 2 - $star-center-width / 2;
+    width: $star-center-width;
+    height: $star-center-width;
+
+    background: radial-gradient(white, transparent);
+    transform: rotate(45deg);
+
+    animation: blink-star 10s infinite linear;
+  }
+}
+
+@keyframes blink-star {
+  96%  { transform: rotate(45deg) scale(1.0); background: radial-gradient(white, transparent); }
+  98%  { transform: rotate(45deg) scale(1.3); background: white; }
+  100% { transform: rotate(45deg) scale(1.0); background: radial-gradient(white, transparent); }
+}
+
+/* SUPER UGLY, but not enough time for something better */
+.star-anim1:after { animation: none; }
+.star-anim2:after { animation-delay: 2s; }
+.star-anim3:after { animation: none; }
+.star-anim4:after { animation-delay: 2.9s; }
+.star-anim5:after { animation: none; }
+.star-anim6:after { animation-delay: 3.8s; }
+.star-anim7:after { animation: none; }
+.star-anim8:after { animation-delay: 4.7s; }
+.star-anim9:after { animation: none; }
+.star-anim10:after { animation-delay: 5.6s; }
+.star-anim11:after { animation: none; }
+.star-anim12:after { animation-delay: 6.5s; }
+.star-anim13:after { animation: none; }
+.star-anim14:after { animation-delay: 5.4s; }
+.star-anim15:after { animation: none; }
+.star-anim16:after { animation-delay: 6.3s; }
+.star-anim17:after { animation: none; }
+.star-anim18:after { animation-delay: 7.2s; }
+.star-anim19:after { animation: none; }
+.star-anim20:after { animation-delay: 8.1s; }
+.star-anim21:after { animation: none; }
+.star-anim22:after { animation-delay: 9.0s; }
+.star-anim23:after { animation: none; }
+.star-anim24:after { animation-delay: 10.1; }
+.star-anim25:after { animation: none; }
