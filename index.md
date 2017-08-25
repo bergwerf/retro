@@ -1,6 +1,6 @@
 ---
 layout: home
-title: Herman Bergwerf's blog
+title: Herman Bergwerf's weblog
 ---
 Welcome to my blog! You can find some old posts here. I want to write more but
 coding is keeping me busy ;-).

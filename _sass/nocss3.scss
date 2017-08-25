@@ -1,0 +1,15 @@
+// Disable CSS3 attributes and other fancy things to test if the page still
+// displays fine.
+
+*, *:before, *:after {
+  box-shadow: none !important;
+  text-shadow: none !important;
+  border-radius: 0px !important;
+  font-family: sans-serif !important;
+  animation: none !important;
+}
+
+#neon-grid, #neon-horizon,
+.blinking-star, .blinking-star:before, .blinking-star:after {
+  background: none !important;
+}
