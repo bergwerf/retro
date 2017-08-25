@@ -23,6 +23,7 @@
       
       // Star scale.
       var s = .2 + Math.random() * .5;
+      s = s / (window.devicePixelRatio || 1);
 
       // Write to document.
       var str = '<div class="blinking-star $d" style="left: $x%; top: $y%; transform: scale($s);"></div>';
