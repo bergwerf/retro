@@ -44,11 +44,11 @@ a {
   transition: color .1s ease, text-shadow .1s ease;
 
   &:hover {
+    cursor: url(/assets/AmigaHandPointer.gif), pointer;
     text-shadow:
       0 1px 5px $neon-green,
       0 0 .5em $neon-green,
       0 0 1em $neon-green;
-    cursor: pointer;
   }
 }
 
