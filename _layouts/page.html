@@ -3,6 +3,22 @@
 {% include head.html %}
 <body>
 <div class="content">
+  <h1><noscript>{{ page.title }}</noscript><script type="text/javascript">
+    var title = '{{ page.title | escape }}';
+    var parts = title.split(' ');
+    for (var i = 0; i < parts.length; i++) {
+      if (i > 0) {
+        document.write(' ');
+      }
+      if (Math.random() < .8) {
+        document.write(parts[i]);
+      } else {
+        var str = '<span class="broken-neon">_0</span>';
+        str = str.replace('_0', parts[i]);
+        document.write(str);
+      }
+    }
+  </script></h1>
   {{ content }}
 </div>
 <div id="neon-horizon">
@@ -26,11 +42,11 @@
       s = s / (window.devicePixelRatio || 1);
 
       // Write to document.
-      var str = '<div class="blinking-star $d" style="left: $x%; top: $y%; transform: scale($s);"></div>';
-      str = str.replace('$x', '' + x);
-      str = str.replace('$y', '' + y);
-      str = str.replace('$s', '' + s);
-      str = str.replace('$d', 'star-anim' + i);
+      var str = '<div class="blinking-star _0" style="left: _1%; top: _2%; transform: scale(_3);"></div>';
+      str = str.replace('_0', 'star-anim' + i);
+      str = str.replace('_1', '' + x);
+      str = str.replace('_2', '' + y);
+      str = str.replace('_3', '' + s);
       document.write(str);
     }
   </script>
