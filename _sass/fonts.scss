@@ -18,6 +18,16 @@
 	font-style: normal;
 }
 
+@font-face {
+	font-family: 'Warnes';
+	src: url('/assets/fonts/Warnes-Regular.eot');
+	src: url('/assets/fonts/Warnes-Regular.eot?#iefix') format('embedded-opentype'),
+		url('/assets/fonts/Warnes-Regular.woff') format('woff'),
+		url('/assets/fonts/Warnes-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
 /* open-sans-regular - latin */
 @font-face {
   font-family: 'Open Sans';

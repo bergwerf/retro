@@ -10,10 +10,23 @@ h1 {
   font-weight: normal;
   font-size: 5em;
 
-  color: $neon-secondary;
-  text-shadow: 0 3px 5px, 0 0 1em;
-
   text-align: center;
+}
+
+h2 {
+  margin-bottom: 0;
+
+  font-family: 'Warnes';
+  font-weight: normal;
+  font-size: 1.5em;
+}
+
+h1, h2 {
+  color: $neon-green-core;
+  text-shadow:
+    0 3px 5px $neon-green,
+    0 0 .5em $neon-green,
+    0 0 1em $neon-green;
 }
 
 .broken-neon {
@@ -25,26 +38,17 @@ h1 {
   100%  { opacity: 1.0; }
 }
 
-h2 {
-  margin-bottom: 0;
-
-  font-family: 'Neon 80s';
-  font-weight: normal;
-  font-size: 2em;
-
-  color: $neon-secondary;
-  text-shadow: 0 2px 4px;
-}
-
 a {
-  color: #0a0;
-  text-shadow: none;
+  color: $neon-green-core;
+  text-shadow: 0 0 5px $neon-blue, 0 0 1em $neon-blue;
   transition: color .1s ease, text-shadow .1s ease;
 
   &:hover {
-    color: #0f0;
+    text-shadow:
+      0 1px 5px $neon-green,
+      0 0 .5em $neon-green,
+      0 0 1em $neon-green;
     cursor: pointer;
-    text-shadow: 0 1px 2px, 0 0 .5em;
   }
 }
 
@@ -55,8 +59,8 @@ a {
 
   color: #cfc;
   background: rgba(0, 0, 0, 0.6);
-  border: 2px solid $neon-secondary;
-  box-shadow: 0 0 15px $neon-secondary, inset 0 0 15px $neon-secondary;
+  border: 2px solid;
+  box-shadow: 0 0 15px $neon-green, inset 0 0 15px $neon-green;
 }
 
 #home-content {
@@ -80,7 +84,7 @@ a {
 .post-link {
   margin-top: 0;
   margin-left: -2px;
-  margin-right: 1em;
+  margin-right: 0;
   margin-bottom: 1em;
 
   padding-top: .1em;
@@ -91,6 +95,9 @@ a {
   border-radius: 0 0 0 1em;
   border-bottom: 2px solid;
   border-left: 2px solid;
+
+  font-size: 2em;
+  box-shadow: 0 2px 2px $neon-green;
 
   &> a {
     text-decoration: none;
