@@ -126,12 +126,11 @@ used to receive events from built-in widgets (e.g. `Fl_Button`) and the handle
 method should only be used for custom widgets.
 
 ## Delivering events via streams
-Next I wanted to use streams rather than 'boring' closures to bind events to
-widgets. A major issue for this is that the FLTK draw/event cycle basically
-blocks the Dart thread. As a result using anything that relies on the Dart task
-scheduler does not work, including asynchronous streams. A solution is using
-synchronized streams only. As a result a program like the following one can be
-written.
+Next I wanted to use streams rather than 'boring' closures to handle events. A
+major issue for this is that the FLTK draw/event cycle basically blocks the Dart
+thread. As a result using anything that relies on the Dart task scheduler does
+not work, including asynchronous streams. A solution is using synchronized
+streams only. As a result a program like the following one can be written.
 
 ```dart
 import 'package:fltk/fltk.dart' as fl;
@@ -153,9 +152,9 @@ int main() {
 ```
 
 I did find a solution to this problem by replacing a call to `Fl::run` with
-a cycle written in Dart that uses `Fl::check`, a function provided by FLTK that
-is intended to allow FLTK to check for events. The resulting run function looks
-like this.
+a periodic timer in Dart that uses `Fl::check`, a function provided by FLTK that
+is intended to allow FLTK to check for queued events. The resulting run function
+looks like this.
 
 ```dart
 Future<int> runAsync([Duration interval = Duration.ZERO]) {
@@ -175,10 +174,10 @@ Future<int> runAsync([Duration interval = Duration.ZERO]) {
 }
 ```
 
-Using this function allows writing the previous callback example using
-asynchronous streams like in the example below. Unfortunately this results in
-extremely high CPU usage, and I have been unable to find a solution. Increasing
-the timer interval reduces this to some extent, but not to a reasonable level.
+This function allows writing the previous callback example using asynchronous
+streams like in the example below. Unfortunately this results in extremely high
+CPU usage, and I have been unable to find a solution. Increasing the timer
+interval reduces this to some extent, but not to a reasonable level.
 
 ```dart
 import 'dart:async';
@@ -203,9 +202,10 @@ Future<int> main() {
 ## Working with OpenGL and Cairo
 Something that is quite exiting is the ability to directly use Cairo and OpenGL
 in FLTK. This is also possible via Dart using the `dartgl` and the `cairodart`
-packages on Pub which provide native bindings. FLTK can setup the context. As a
-result a simple drawing program can be written like in the following example. A
-number of other examples can be found in [test/classic][7].
+packages from Pub which provide native bindings to these libraries. FLTK can
+setup the required context. As a result a simple drawing program can be written
+as in the following example. A number of other examples can be found in
+[test/classic][7].
 
 ```dart
 import 'dart:math';
@@ -265,12 +265,13 @@ int main() {
 
 ## Hot reloading
 At the Dart Developer Summit 2016 I learned about the Dart VM service protocol
-and the ability to trigger a hot reload from outside. I created a small program
-that watches for file changes in the source directory and reloads the app as a
-result. To make this work I wrote a small UI building system and function to
-merge new and old widget trees. As a result a program does not have to be closed
-in order to update styles or callback functions. An example program is shown
-below. There is also a video where I demonstrate this ability [here][8].
+and the ability to trigger a hot reload. I created a small program that watches
+for file changes in the source directory and reloads the app as a result. To
+make this work I wrote a small UI building system and function to merge new and
+old widget trees. As a result a program does not have to be closed in order to
+update styles or callback functions. An example program is shown below. I also
+uploaded a video to YouTube where I demonstrate this ability. You can find the
+video [here][8].
 
 ```dart
 import 'dart:async';
@@ -302,7 +303,7 @@ Future<int> main() async {
 ```
 
 I hope you enjoyed reading this. Feel free to send me an email if you have
-further questions or comments.
+further questions or remarks.
 
 [0]: http://www.fltk.org
 [1]: https://www.dartlang.org/articles/dart-vm/native-extensions
