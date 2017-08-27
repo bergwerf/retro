@@ -1,7 +1,7 @@
 @import 'colors';
 
 .content {
-  max-width: 50em;
+  max-width: 58em;
   margin: 0 auto;
 }
 
@@ -39,7 +39,7 @@ h1, h2 {
 }
 
 a {
-  color: $neon-green-core;
+  color: $neon-blue-core;
   text-shadow: 0 0 5px $neon-blue, 0 0 1em $neon-blue;
   transition: color .1s ease, text-shadow .1s ease;
 
@@ -107,9 +107,35 @@ a {
 .post-box {
   font-size: 1.3em;
   line-height: 1.6em;
+  background: linear-gradient(transparent 10em, #000 15em);
+
+  & h2 {
+    margin-top: 1.5em;
+    color: $neon-red-core;
+    text-shadow: 0 0 5px $neon-red, 0 0 1em $neon-red;
+  }
 }
 
 .home-link {
   margin-top: 0.4em;
   display: block;
+}
+
+pre {
+  overflow: auto;
+  padding: 1em 1.3em;
+
+  border-radius: 1em;
+  border: 1px solid $neon-yellow-core;
+  box-shadow: 0 0 8px $neon-yellow, inset 0 0 8px $neon-yellow;
+  color: $neon-yellow-core;
+
+  & .c1 {
+    opacity: .4;
+  }
+}
+
+code.highlighter-rouge {
+  color: $neon-yellow-core;
+  text-shadow: 0 1px 2px $neon-yellow;
 }
