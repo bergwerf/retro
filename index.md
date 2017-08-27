@@ -3,7 +3,8 @@ layout: home
 title: Herman Bergwerf's weblog
 ---
 Welcome to my blog! You can find some old posts here. I want to write more but
-coding is keeping me busy ;-). You can reach me via `hermanbergwerf@gmail.com`.
+coding is keeping me busy ;-). You can reach me via
+`hermanbergwerf [at] gmail.com`.
 
 ## About me
 I am currently doing a BSc nanobiology (bionanoscience) at TU Delft. I am super
