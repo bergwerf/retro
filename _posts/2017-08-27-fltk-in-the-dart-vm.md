@@ -263,7 +263,7 @@ int main() {
 }
 ```
 
-## Hot reloading
+## Hot reload
 At the Dart Developer Summit 2016 I learned about the Dart VM service protocol
 and the ability to trigger a hot reload. I created a small program that watches
 for file changes in the source directory and reloads the app as a result. To
