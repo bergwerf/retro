@@ -3,7 +3,10 @@ layout: page
 ---
 
 <div class="neon-box post-box">
-  <a class="home-link" href="/">&crarr; Go back to index</a>
+  <p>
+    <a class="home-link" href="/">&crarr; Go back to index</a>
+    <span class="page-date">{{ page.date | date: "%b %-d, %Y" }}</span>
+  </p>
   {{ content }}
-  <a class="home-link" href="/">&crarr; Go back to index</a>
+  <p><a class="home-link" href="/">&crarr; Go back to index</a></p>
 </div>
