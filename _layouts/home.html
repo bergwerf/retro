@@ -14,3 +14,10 @@ layout: page
     </h2>
   {% endfor %}
 </div>
+
+<script type="text/javascript">
+  var str = '<audio autoplay><source src="assets/intro.mp3" type="audio/mpeg"></audio>';
+  if (document.referrer.indexOf(location.host) == -1) {
+    document.write(str);
+  }
+</script>
