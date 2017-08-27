@@ -67,6 +67,12 @@ a {
   box-shadow: 0 0 15px $neon-green, inset 0 0 15px $neon-green;
 }
 
+@media (max-width: 500px) {
+  .neon-box {
+    padding: 0 1em;
+  }
+}
+
 #home-content {
   font-family: 'Neon 80s';
   font-size: 1.6em;
