@@ -126,10 +126,16 @@ a {
   }
 }
 
+.home-link {
+  margin-bottom: 0.6em;
+  display: inline-block;
+}
+
 .page-date {
   font-family: 'Orbitron';
   font-style: italic;
   float: right;
+  margin: 0 .6em;
 }
 
 pre {
