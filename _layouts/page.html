@@ -2,6 +2,7 @@
 <html lang="{{ page.lang | default: site.lang | default: "en" }}">
 {% include head.html %}
 <body>
+<div id="neon-grid"></div>
 <div id="neon-horizon">
   <script type="text/javascript">
     // Put some random stars here.
@@ -32,8 +33,7 @@
     }
   </script>
 </div>
-<div id="neon-grid"></div>
-<div class="content" style="-webkit-transform: translate3d(0px, 0px, 0px);">
+<div class="content" style="-webkit-transform: translate3d(0px, 0px, 1000px);">
 <h1><noscript>{{ page.title }}</noscript><script type="text/javascript">
     var title = '{{ page.title | escape }}';
     var parts = title.split(' ');
