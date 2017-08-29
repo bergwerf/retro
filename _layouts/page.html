@@ -2,27 +2,6 @@
 <html lang="{{ page.lang | default: site.lang | default: "en" }}">
 {% include head.html %}
 <body>
-<div class="content">
-  <h1><noscript>{{ page.title }}</noscript><script type="text/javascript">
-    var title = '{{ page.title | escape }}';
-    var parts = title.split(' ');
-    var broken = false;
-    for (var i = 0; i < parts.length; i++) {
-      if (i > 0) {
-        document.write(' ');
-      }
-      if (broken || Math.random() < .8) {
-        document.write(parts[i]);
-      } else {
-        broken = true;
-        var str = '<span class="broken-neon">_0</span>';
-        str = str.replace('_0', parts[i]);
-        document.write(str);
-      }
-    }
-  </script></h1>
-  {{ content }}
-</div>
 <div id="neon-horizon">
   <script type="text/javascript">
     // Put some random stars here.
@@ -54,5 +33,26 @@
   </script>
 </div>
 <div id="neon-grid"></div>
+<div class="content" style="-webkit-transform: translate3d(0px, 0px, 0px);">
+<h1><noscript>{{ page.title }}</noscript><script type="text/javascript">
+    var title = '{{ page.title | escape }}';
+    var parts = title.split(' ');
+    var broken = false;
+    for (var i = 0; i < parts.length; i++) {
+      if (i > 0) {
+        document.write(' ');
+      }
+      if (broken || Math.random() < .8) {
+        document.write(parts[i]);
+      } else {
+        broken = true;
+        var str = '<span class="broken-neon">_0</span>';
+        str = str.replace('_0', parts[i]);
+        document.write(str);
+      }
+    }
+  </script></h1>
+  {{ content }}
+</div>
 </body>
 </html>
