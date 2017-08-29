@@ -1,6 +1,7 @@
 @import 'colors';
 
 #neon-grid {
+  z-index: -2;
   position: fixed;
 
   top: 0;
@@ -22,7 +23,7 @@
       $neon-pink 10px,
       transparent 12px);
 
-  background-size: 22px, 12px;
+  background-size: 24px 14px;
 
   transform: perspective(120px) rotateX(70deg) scaleX(4) translateZ(-100px);
   //animation: grid-forward .3s infinite linear;
@@ -34,6 +35,7 @@
 }*/
 
 #neon-horizon {
+  z-index: -1;
   position: fixed;
 
   top: 0;
