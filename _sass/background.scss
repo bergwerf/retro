@@ -18,13 +18,15 @@
     linear-gradient(
       0deg,
       transparent 0px,
-      transparent 8px,
-      $neon-pink 10px,
-      transparent 12px);
+      transparent 4px,
+      $neon-pink 5px,
+      transparent 6px);
 
-  background-size: 24px 14px;
+  background-size: 24px 7px;
 
-  transform: perspective(120px) rotateX(70deg) scaleX(4) translateZ(-100px);
+  // scaleY(2) was added specifically for IE11.
+  transform: perspective(120px) rotateX(70deg) scaleX(4) scaleY(2) translateZ(-100px);
+  
   //animation: grid-forward .3s infinite linear;
 }
 
