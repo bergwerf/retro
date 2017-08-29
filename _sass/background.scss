@@ -19,10 +19,10 @@
       0deg,
       transparent 0px,
       transparent 4px,
-      $neon-pink 5px,
-      transparent 6px);
+      $neon-pink 4.5px,
+      transparent 5px);
 
-  background-size: 24px 7px;
+  background-size: 24px 6px;
 
   // scaleY(2) was added specifically for IE11.
   transform: perspective(120px) rotateX(70deg) scaleX(4) scaleY(2) translateZ(-100px);
