@@ -9,18 +9,20 @@
   bottom: 0;
 
   background:
-    repeating-linear-gradient(
+    linear-gradient(
       90deg,
       transparent 0px,
       transparent 18px,
       $neon-pink 20px,
       transparent 22px),
-    repeating-linear-gradient(
+    linear-gradient(
       0deg,
       transparent 0px,
       transparent 8px,
       $neon-pink 10px,
       transparent 12px);
+
+  background-size: 22px, 12px;
 
   transform: perspective(120px) rotateX(70deg) scaleX(4) translateZ(-100px);
   //animation: grid-forward .3s infinite linear;
