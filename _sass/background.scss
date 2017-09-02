@@ -8,20 +8,7 @@
   right: 0;
   bottom: 0;
 
-  background:
-    linear-gradient(
-      90deg,
-      transparent 0px,
-      transparent 18px,
-      $neon-pink 20px,
-      transparent 22px),
-    linear-gradient(
-      0deg,
-      transparent 0px,
-      transparent 4px,
-      $neon-pink 4.5px,
-      transparent 5px);
-
+  background: url(/assets/bg.png);
   background-size: 24px 6px;
 
   // scaleY(2) was added specifically for IE11.
