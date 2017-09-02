@@ -46,17 +46,6 @@
   background: linear-gradient(black 90%, transparent)
 }
 
-// Fix IE z-ordering.
-@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-  #neon-grid {
-    z-index: -2;
-  }
-  
-  #neon-horizon {
-    z-index: -1;
-  }
-}
-
 $star-extend-width: 4px;
 $star-extend-length: 30px;
 $star-center-width: 14px;
