@@ -9,10 +9,9 @@
   bottom: 0;
 
   background: url(/assets/bg.png);
-  background-size: 24px 6px;
 
-  // scaleY(2) was added specifically for IE11.
-  transform: perspective(120px) rotateX(70deg) scaleX(4) scaleY(2) translateZ(-100px);
+  transform-origin: bottom;
+  transform: perspective(100px) rotateX(10deg) scale(8);
   
   //animation: grid-forward .3s infinite linear;
 }
