@@ -16,4 +16,4 @@ computer AI or online multiplayer yet and the game won't recognize if you've
 conquered the world. However, the music, composed by my nephew, is beautiful!
 I learned a lot about RaphaelJS, CSS3 and JavaScript by developing this game.
 
-You can check out the came [here](https://bergwerf.github.io/risk/).
+You can check out the game [here](https://bergwerf.github.io/risk/).
