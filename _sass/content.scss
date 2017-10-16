@@ -66,6 +66,11 @@ a {
   background: rgba(0, 0, 0, 0.6);
   border: 2px solid;
   box-shadow: 0 0 15px $neon-green, inset 0 0 15px $neon-green;
+
+  // Rainy effect.
+  background-image: url(/assets/rain.png);
+  background-repeat: repeat-x;
+  background-size: 30rem;
 }
 
 @media (max-width: 500px) {
@@ -108,7 +113,7 @@ a {
   border-left: 2px solid;
 
   font-size: 2em;
-  box-shadow: 0 2px 2px $neon-green;
+  box-shadow: 0 8px 7px #00ff0080;
 
   &> a {
     text-decoration: none;
