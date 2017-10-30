@@ -9,10 +9,10 @@
   bottom: 0;
 
   background: url(/assets/bg.svg);
-  background-size: 5vw 8vw;
+  background-size: 3vw;
 
   transform-origin: bottom;
-  transform: perspective(70px) rotateX(7deg) scaleX(4) scaleY(2);
+  transform: perspective(70px) rotateX(7deg) scaleX(2) scaleY(2);
   
   animation: grid-forward 8s infinite step-end;
 }
