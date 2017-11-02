@@ -2,11 +2,11 @@
 <html lang="{{ page.lang | default: site.lang | default: "en" }}">
 {% include head.html %}
 <body>
-<div id="neon-grid"></div>
+<!-- <div id="neon-grid"></div> -->
 <div id="neon-horizon">
   <script type="text/javascript">
     // Put some random stars here.
-    var n = 5 + Math.round(Math.random() * 20);
+    var n = 10 + Math.round(Math.random() * 30);
     var pad = [.05, .05, .05, .4];
     for (var i = 0; i < n; i++) {
       var randx = Math.random();
@@ -20,7 +20,7 @@
       var y = (pad[1] + randy * (1 - pad[1] - pad[3])) * 100;
       
       // Star scale.
-      var s = .2 + Math.random() * .5;
+      var s = .2 + Math.random() * .4;
       s = s / (window.devicePixelRatio || 1);
 
       // Write to document.
