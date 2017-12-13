@@ -4,7 +4,6 @@ title:       Drive3D Privacy Policy
 date:        2017-12-13
 categories:  files
 author:      Herman Bergwerf
-list:        no
 ---
 
 Drive3D is an open-source web application that enables users to use WebGl to
