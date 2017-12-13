@@ -4,15 +4,15 @@
   position: fixed;
 
   top: 0;
-  left: 0;
-  right: 0;
+  left: -100%;
+  right: -100%;
   bottom: 0;
 
   background: url(/assets/bg.svg);
-  background-size: 5vw 8vw;
+  background-size: 10vmin;
 
   transform-origin: bottom;
-  transform: perspective(70px) rotateX(7deg) scaleX(4) scaleY(2);
+  transform: perspective(70px) rotateX(5deg);
   
   animation: grid-forward 8s infinite step-end;
 }
