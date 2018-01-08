@@ -31,6 +31,68 @@
       str = str.replace('_3', '' + s);
       document.write(str);
     }
+
+    // Draw planet.
+    if (window.location.pathname.length < 2) { // usually '' or '/'
+      // Open container.
+      var size = .9, resolution = 18;
+      var str = '<div style="position: absolute; width: _0em; height: _1em; \
+top: _2em; left: _3em; font-size: _4rem; line-height: 0;">';
+      str = str.replace('_0', '' + resolution);
+      str = str.replace('_1', '' + resolution);
+      str = str.replace('_2', '' + (3 + Math.random() * 5));
+      str = str.replace('_3', '' + (3 + Math.random() * 7));
+      str = str.replace('_4', '' + size);
+      document.write(str);
+
+      // Determine random planet color.
+      var r = 200 + Math.random() * 50; // Bias red planets
+      var g = 100 + Math.random() * 150; // Bias blue planets a bit
+      var b = 5 + Math.random() * 250;
+
+      // Average out.
+      var intensity = (r + g + b) / 3;
+      var mult = 200 / intensity;
+      r *= mult;
+      g *= mult;
+      b *= mult;
+
+      var athmosphere = Math.random() > 0.8;
+      
+      // Shade pixels.
+      for (var x = 0; x < resolution; x++) {
+        for (var y = 0; y < resolution; y++) {
+          var str = '<span style="background: rgba(_0, _1, _2, _3); width: 1em; height: 1em; display: inline-block;"></span>';
+          
+          // Translate to (x; y) coord in [-1, 1] range.
+          var xx = (x / resolution) * 2 - 1;
+          var yy = (y / resolution) * 2 - 1;
+          var radius = Math.sqrt(xx * xx + yy * yy);
+
+          // Darken to the left-bottom.
+          var invy = resolution - y;
+          var lbdist = Math.sqrt(x * x + invy * invy) / (resolution * Math.sqrt(2));
+
+          var value = .4 + .4 * Math.random();
+          if (athmosphere && radius > 0.8) {
+            value = 1, value + (1 - value);
+          }
+          value = Math.min(1, value * (1 - 1.5 * lbdist));
+  
+          str = str.replace('_0', '' + Math.round(value * r));
+          str = str.replace('_1', '' + Math.round(value * g));
+          str = str.replace('_2', '' + Math.round(value * b));
+
+          var alpha = Math.min(radius > 0.9 ? 1 - radius : 1, 1);
+          str = str.replace('_3', '' + alpha);
+
+          document.write(str);
+        }
+      }
+      
+      // Close container.
+      document.write('</div>');
+    }
   </script>
 </div>
 <div class="content">

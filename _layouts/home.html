@@ -18,6 +18,7 @@ layout: page
 </div>
 
 <script type="text/javascript">
+  // Play intro sound (only when the visitor arrived from another page).
   var str = '<audio autoplay><source src="assets/intro-ubuntu.mp3" type="audio/mpeg"></audio>';
   if (document.referrer.indexOf(location.host) == -1) {
     document.write(str);
