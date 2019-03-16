@@ -39,15 +39,17 @@
 }
 
 @font-face {
-  font-family: 'Digital-7';
-  src: url('/assets/fonts/Digital-7.eot');
-  src: url('/assets/fonts/Digital-7.eot?#iefix') format('embedded-opentype'),
-      url('/assets/fonts/Digital-7.woff2') format('woff2'),
-      url('/assets/fonts/Digital-7.woff') format('woff'),
-      url('/assets/fonts/Digital-7.ttf') format('truetype');
+  font-family: 'Digital-7 Mono';
+  src: url('/assets/fonts/Digital-7Mono.eot');
+  src: url('/assets/fonts/Digital-7Mono.eot?#iefix') format('embedded-opentype'),
+      url('/assets/fonts/Digital-7Mono.woff2') format('woff2'),
+      url('/assets/fonts/Digital-7Mono.woff') format('woff'),
+      url('/assets/fonts/Digital-7Mono.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
+
+
 
 /* open-sans-regular - latin */
 @font-face {

@@ -3,9 +3,10 @@ layout: page
 ---
 
 <div id="digital-clock">
-  <span id="time"><span id="hours">88</span><span id="time-colon">:</span><span id="minutes">88</span></span>
-  <!-- <span id="say-time">SAY</span> -->
+  <span id="time"><span id="hours">88</span><span id="time-colon">:</span><span id="minutes">88</span><span id="say-time">SAY</span></span>
 </div>
+<script type="text/javascript" src="/speak/Speak.js"></script>
+<script type="text/javascript" src="/speak/sam.js"></script>
 <script type="text/javascript">
   setInterval(function() {
     var d = new Date();
@@ -14,6 +15,29 @@ layout: page
     document.getElementById('hours').innerText = hh;
     document.getElementById('minutes').innerText = mm;
   }, 500);
+
+  var n0to19 = 'zero,one,two,three,four,five,six,seven,eight,nine,ten,eleven,twelve,thirteen,fourteen,fifteen,sixteen,seventeen,eighteen,nineteen'.split(',');
+  var n00to90 = ',ten,twenty,thirty,forty,fifty,sixty,seventy,eighty,ninety'.split(',');
+
+  function convertNumberToWord(n) {
+    if (n >= 0) {
+      if (n < 20) {
+        return n0to19[n];
+      } else if (n < 100) {
+        var n1 = Math.floor(n / 10);
+        var n2 = n % 10;
+        return n00to90[n1] + (n2 == 0 ? '' : n0to19[n2]); 
+      }
+    }
+    return '';
+  }
+
+  document.getElementById('say-time').addEventListener('click', function() {
+    var d = new Date();
+    Speak("The current time is "
+      + convertNumberToWord(d.getHours()) + " hours and "
+      + convertNumberToWord(d.getMinutes()) + " minutes");
+  });
 </script>
 
 <div id="home-content" class="neon-box">

@@ -7,25 +7,56 @@
 }
 
 #time {
+  position: relative;
   color: $neon-red;
   font-size: 5.5em;
-  font-family: 'Digital-7', monospace;
+  font-family: 'Digital-7 Mono', monospace;
   text-shadow: 0 0 10px $neon-red;
   letter-spacing: .1em;
 }
 
+#hours, #time-colon, #minutes {
+  position: relative;
+}
+
+#hours::before, #minutes::before {
+  content: '88';
+  position: absolute;
+  opacity: 0.2;
+}
+
+#time-colon::before {
+  content: ':';
+  position: absolute;
+  color: $neon-red;
+  opacity: 0.2;
+}
+
 #time-colon {
+  margin: 0 -.15em;
   animation: blink-on-off 1s infinite step-end;
 }
 
 @keyframes blink-on-off {
-  0%    { opacity: 0; }
-  50%  { opacity: 1; }
+  0% {
+    color: $neon-red;
+    text-shadow: 0 0 10px $neon-red;
+  }
+  50%  {
+    color: transparent;
+    text-shadow: none;
+  }
 }
 
-// Unused but fancy button
 #say-time {
+  cursor: url(/assets/AmigaHandPointer.gif), pointer;
+  position: absolute;
   display: inline-block;
+  bottom: -1em;
+  right: -3.5em;
+  //
+  font-size: 1rem;
+  letter-spacing: 0;
   line-height: .8em;
   padding: .2em .3em .0em .1em;
   //
