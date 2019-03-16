@@ -149,17 +149,27 @@ a {
 // Some ridiculous Chromium bug makes rendering extreme slow when adding padding
 // to all pre elements. Why remains a mystery.
 pre {
-  //overflow: auto;
   //padding: 1em 1.3em;
-
   //border-radius: 1em;
   //border: 2px solid $neon-yellow-core;
 
+  overflow: auto;
+  font-size: 1rem;
+  line-height: 1.3rem;
   color: $neon-yellow-core;
+
+  padding-top: 1em;
+  border-top: 2px solid #ffffccaa;
 
   & .c1 {
     opacity: .4;
   }
+}
+
+// A solution carefully designed not to scare Chromium.
+div.highlighter-rouge > div {
+  padding-bottom: .2em;
+  border-bottom: 2px solid #ffffccaa;
 }
 
 code.highlighter-rouge {
