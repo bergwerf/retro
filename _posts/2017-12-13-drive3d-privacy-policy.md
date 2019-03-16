@@ -6,10 +6,10 @@ categories:  files
 author:      Herman Bergwerf
 ---
 
-Drive3D is an open-source web application that enables users to use WebGl to
+Drive3D is an open-source web application that enables you to use WebGl to
 view OBJ/MTL files that are stored on Google Drive. The source code of Drive3D
-can be found at [https://github.com/bergwerf/drive3d](). This version of the source
-code is published at [http://drive.hermanbergwerf.com]() via GitHub pages.
+can be found at [github.com/bergwerf/drive3d](https://github.com/bergwerf/drive3d).
+The appliation is published at [drive3d.hermanbergwerf.com](http://drive3d.hermanbergwerf.com).
 
 Drive3D uses OAuth in order to authenticate with Google Drive. This access is
 used by the app to:
@@ -25,4 +25,4 @@ Google Drive API is not shared with third parties.
 
 Note that this application is made available under the terms of the MIT license.
 If you find any issues or inconsistencies with regard to privacy, please open an
-issue on GitHub at [https://github.com/bergwerf/drive3d/issues]().
+issue on GitHub at [github.com/bergwerf/drive3d/issues](https://github.com/bergwerf/drive3d/issues).

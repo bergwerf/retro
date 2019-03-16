@@ -1,15 +1,14 @@
 ---
 layout: home
-title: Herman Bergwerf's weblog
+title: Herman's weblog
 ---
 Welcome to my blog! You can find some old posts here. I want to write more but
 coding is keeping me busy ;-). You can reach me via hermanbergwerf@gmail.com.
 
 ## About me
-I am currently doing a BSc nanobiology (bionanoscience) at TU Delft. I am super
-passionate about coding and user interface design. My projects range from 3D
-graphics using WebGL/GLSL, to writing a rewrite system to formalize mathematical
-proofs, to building a bridge between the FLTK widget library and the Dart VM. I
-have been using Dart as my main porgramming language for a while. A more complete
-overview of all my (open-source) projects can be found at my
-[GitHub profile](https://github.com/bergwerf).
+I recently finished a bachelor in nanobiology at TU Delft, but my interests have
+shifted towards logic, mathematics, and theoretical computer science.
+
+There is nothing that gives me as much focus and satisfaction as working on my
+own side projects. I am currently an happy user of the Dart programming
+language.

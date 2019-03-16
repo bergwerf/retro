@@ -2,6 +2,20 @@
 layout: page
 ---
 
+<div id="digital-clock">
+  <span id="time"><span id="hours">88</span><span id="time-colon">:</span><span id="minutes">88</span></span>
+  <!-- <span id="say-time">SAY</span> -->
+</div>
+<script type="text/javascript">
+  setInterval(function() {
+    var d = new Date();
+    var hh = ('00' + d.getHours().toString()).slice(-2);
+    var mm = ('00' + d.getMinutes().toString()).slice(-2);
+    document.getElementById('hours').innerText = hh;
+    document.getElementById('minutes').innerText = mm;
+  }, 500);
+</script>
+
 <div id="home-content" class="neon-box">
   {{ content }}
 </div>
@@ -17,6 +31,7 @@ layout: page
   {% endfor %}
 </div>
 
+{% comment %}
 <script type="text/javascript">
   // Play intro sound (only when the visitor arrived from another page).
   var str = '<audio autoplay><source src="assets/intro-ubuntu.mp3" type="audio/mpeg"></audio>';
@@ -24,3 +39,4 @@ layout: page
     document.write(str);
   }
 </script>
+{% endcomment %}

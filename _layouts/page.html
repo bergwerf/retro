@@ -99,15 +99,16 @@ top: _2em; left: _3em; font-size: _4rem; line-height: 0;">';
 <h1><noscript>{{ page.title }}</noscript><script type="text/javascript">
     var title = '{{ page.title | escape }}';
     var parts = title.split(' ');
-    var broken = false;
+    var brokeOnce = false; // Make sure at most one word is broken.
     for (var i = 0; i < parts.length; i++) {
       if (i > 0) {
         document.write(' ');
       }
-      if (broken || Math.random() < .8) {
+      // Do not break on index.
+      if (brokeOnce || location.pathname == '/' || Math.random() < .8) {
         document.write(parts[i]);
       } else {
-        broken = true;
+        brokeOnce = true;
         var str = '<span class="broken-neon">_0</span>';
         str = str.replace('_0', parts[i]);
         document.write(str);

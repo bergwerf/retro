@@ -1,0 +1,41 @@
+@import 'colors';
+
+#digital-clock {
+  margin-top: -1em;
+  margin-bottom: 2.5em;
+  text-align: center;
+}
+
+#time {
+  color: $neon-red;
+  font-size: 5.5em;
+  font-family: 'Digital-7', monospace;
+  text-shadow: 0 0 10px $neon-red;
+  letter-spacing: .1em;
+}
+
+#time-colon {
+  animation: blink-on-off 1s infinite step-end;
+}
+
+@keyframes blink-on-off {
+  0%    { opacity: 0; }
+  50%  { opacity: 1; }
+}
+
+// Unused but fancy button
+#say-time {
+  display: inline-block;
+  line-height: .8em;
+  padding: .2em .3em .0em .1em;
+  //
+  color: #000;
+  font-family: 'Orbitron';
+  font-style: italic;
+  border-radius: .1em;
+  text-shadow: 0 0 2px white;
+  //
+  border-radius: .1em;
+  background: #ccc;
+  background: linear-gradient(#fff, #666);
+}
