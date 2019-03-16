@@ -45,15 +45,14 @@ p {
 
 a {
   color: $neon-blue-core;
-  text-shadow: 0 0 5px $neon-blue, 0 0 1em $neon-blue;
   transition: color .1s ease, text-shadow .1s ease;
 
   &:hover {
     cursor: url(/assets/AmigaHandPointer.gif), pointer;
     text-shadow:
-      0 1px 5px $neon-green,
-      0 0 .5em $neon-green,
-      0 0 1em $neon-green;
+      0 1px 5px $neon-blue,
+      0 0 .5em $neon-blue,
+      0 0 1em $neon-blue;
   }
 }
 
@@ -83,7 +82,6 @@ a {
   font-family: 'Neon 80s';
   font-size: 1.6em;
   letter-spacing: .05em;
-  text-shadow: 0 0 1em;
 }
 
 #post-list {
@@ -117,6 +115,10 @@ a {
 
   &> a {
     text-decoration: none;
+    text-shadow:
+      0 3px 5px $neon-blue,
+      0 0 .5em $neon-blue,
+      0 0 1em $neon-blue;
   }
 }
 
@@ -144,13 +146,15 @@ a {
   margin: 0 .6em;
 }
 
+// Some ridiculous Chromium bug makes rendering extreme slow when adding padding
+// to all pre elements. Why remains a mystery.
 pre {
-  overflow: auto;
-  padding: 1em 1.3em;
+  //overflow: auto;
+  //padding: 1em 1.3em;
 
-  border-radius: 1em;
-  border: 1px solid $neon-yellow-core;
-  box-shadow: 0 0 8px $neon-yellow, inset 0 0 8px $neon-yellow;
+  //border-radius: 1em;
+  //border: 2px solid $neon-yellow-core;
+
   color: $neon-yellow-core;
 
   & .c1 {
@@ -160,5 +164,5 @@ pre {
 
 code.highlighter-rouge {
   color: $neon-yellow-core;
-  text-shadow: 0 1px 2px $neon-yellow;
+  //text-shadow: 0 1px 2px $neon-yellow;
 }
