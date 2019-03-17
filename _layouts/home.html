@@ -35,9 +35,18 @@ layout: page
   document.getElementById('say-time').addEventListener('click', function(e) {
     e.preventDefault();
     var d = new Date();
-    Speak("The current time is "
-      + convertNumberToWord(d.getHours()) + " hours and "
-      + convertNumberToWord(d.getMinutes()) + " minutes");
+    var h = d.getHours();
+    var m = d.getMinutes();
+    if (h == 13 && m == 37) {
+      Speak("The current time is");
+      setTimeout(function() {
+        Speak("eleet");
+      }, 2000);
+    } else {
+      Speak("The current time is "
+        + convertNumberToWord(h) + " hours and "
+        + convertNumberToWord(m) + " minutes");
+    }
   });
 </script>
 
