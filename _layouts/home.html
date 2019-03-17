@@ -32,7 +32,8 @@ layout: page
     return '';
   }
 
-  document.getElementById('say-time').addEventListener('click', function() {
+  document.getElementById('say-time').addEventListener('click', function(e) {
+    e.preventDefault();
     var d = new Date();
     Speak("The current time is "
       + convertNumberToWord(d.getHours()) + " hours and "

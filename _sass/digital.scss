@@ -49,6 +49,7 @@
 }
 
 #say-time {
+  user-select: none;
   cursor: url(/assets/AmigaHandPointer.gif), pointer;
   position: absolute;
   display: inline-block;
