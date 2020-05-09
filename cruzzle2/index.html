@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Cruzzle</title>
+  <meta name="description" content="A fun puzzle">
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #000;
+      touch-action: none;
+    }
+
+    #container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    #screen {
+      position: absolute;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+  <div id="container">
+    <canvas id="screen"></canvas>
+  </div>
+  <canvas id="offscreen" style="display:none;"></canvas>
+  <audio id="wheel" style="display:none;">
+    <source src="assets/sounds/wheel.wav" type="audio/ogg">
+  </audio>
+  <audio id="click_1" style="display:none;">
+    <source src="assets/sounds/click_1.wav" type="audio/wav">
+  </audio>
+  <audio id="click_2" style="display:none;">
+    <source src="assets/sounds/click_2.wav" type="audio/wav">
+  </audio>
+  <audio id="completed" style="display:none;">
+    <source src="assets/sounds/completed.wav" type="audio/ogg">
+  </audio>
+  <script src="cruzzle2.js"></script>
+</body>
+</html>
