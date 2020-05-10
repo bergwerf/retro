@@ -2528,13 +2528,18 @@ $packages["math/bits"] = (function() {
 	return $pkg;
 })();
 $packages["math"] = (function() {
-	var $pkg = {}, $init, js, bits, arrayType, arrayType$1, arrayType$2, structType, math, zero, posInf, negInf, nan, buf, Copysign, Exp, Floor, Inf, IsInf, IsNaN, Log, Max, Min, NaN, Pow, Signbit, Trunc, init, Float32bits, Float64bits, Float64frombits, Abs, max, min, Round;
+	var $pkg = {}, $init, js, bits, arrayType, arrayType$1, arrayType$2, structType, math, zero, posInf, negInf, nan, buf, Ceil, Copysign, Exp, Floor, Inf, IsInf, IsNaN, Log, Max, Min, NaN, Pow, Signbit, Trunc, init, Float32bits, Float64bits, Float64frombits, Abs, max, min, Round;
 	js = $packages["github.com/gopherjs/gopherjs/js"];
 	bits = $packages["math/bits"];
 	arrayType = $arrayType($Uint32, 2);
 	arrayType$1 = $arrayType($Float32, 2);
 	arrayType$2 = $arrayType($Float64, 1);
 	structType = $structType("math", [{prop: "uint32array", name: "uint32array", embedded: false, exported: false, typ: arrayType, tag: ""}, {prop: "float32array", name: "float32array", embedded: false, exported: false, typ: arrayType$1, tag: ""}, {prop: "float64array", name: "float64array", embedded: false, exported: false, typ: arrayType$2, tag: ""}]);
+	Ceil = function(x) {
+		var x;
+		return $parseFloat(math.ceil(x));
+	};
+	$pkg.Ceil = Ceil;
 	Copysign = function(x, y) {
 		var x, y;
 		if (!((x < 0 || (1 / x === negInf)) === (y < 0 || (1 / y === negInf)))) {
@@ -12161,12 +12166,32 @@ $packages["github.com/gopherjs/gopherjs/nosync"] = (function() {
 	return $pkg;
 })();
 $packages["time"] = (function() {
-	var $pkg = {}, $init, errors, js, nosync, runtime, syscall, ParseError, Time, Month, Weekday, Duration, Location, zone, zoneTrans, sliceType, sliceType$1, ptrType, sliceType$2, arrayType, sliceType$3, arrayType$1, arrayType$2, ptrType$2, arrayType$3, ptrType$4, ptrType$7, zoneSources, std0x, longDayNames, shortDayNames, shortMonthNames, longMonthNames, atoiError, errBad, errLeadingInt, months, days, daysBefore, startNano, utcLoc, utcLoc$24ptr, localLoc, localLoc$24ptr, localOnce, errLocation, badData, x, init, initLocal, runtimeNano, now, indexByte, startsWithLowerCase, nextStdChunk, match, lookup, appendInt, atoi, formatNano, quote, isDigit, getnum, cutspace, skip, Parse, parse, parseTimeZone, parseGMT, parseSignedOffset, parseNanoseconds, leadingInt, absWeekday, absClock, fmtFrac, fmtInt, lessThanHalf, absDate, daysIn, Now, unixTime, Unix, isLeap, norm, Date, div, FixedZone;
+	var $pkg = {}, $init, errors, js, nosync, runtime, syscall, runtimeTimer, ParseError, Timer, Time, Month, Weekday, Duration, Location, zone, zoneTrans, sliceType, sliceType$1, ptrType, sliceType$2, arrayType, sliceType$3, arrayType$1, arrayType$2, ptrType$2, chanType, arrayType$3, funcType$1, ptrType$3, ptrType$4, ptrType$5, chanType$1, ptrType$7, zoneSources, std0x, longDayNames, shortDayNames, shortMonthNames, longMonthNames, atoiError, errBad, errLeadingInt, months, days, daysBefore, startNano, utcLoc, utcLoc$24ptr, localLoc, localLoc$24ptr, localOnce, errLocation, badData, x, init, initLocal, runtimeNano, now, startTimer, stopTimer, indexByte, startsWithLowerCase, nextStdChunk, match, lookup, appendInt, atoi, formatNano, quote, isDigit, getnum, cutspace, skip, Parse, parse, parseTimeZone, parseGMT, parseSignedOffset, parseNanoseconds, leadingInt, when, NewTimer, sendTime, After, absWeekday, absClock, fmtFrac, fmtInt, lessThanHalf, absDate, daysIn, Now, unixTime, Unix, isLeap, norm, Date, div, FixedZone;
 	errors = $packages["errors"];
 	js = $packages["github.com/gopherjs/gopherjs/js"];
 	nosync = $packages["github.com/gopherjs/gopherjs/nosync"];
 	runtime = $packages["runtime"];
 	syscall = $packages["syscall"];
+	runtimeTimer = $pkg.runtimeTimer = $newType(0, $kindStruct, "time.runtimeTimer", true, "time", false, function(i_, when_, period_, f_, arg_, timeout_, active_) {
+		this.$val = this;
+		if (arguments.length === 0) {
+			this.i = 0;
+			this.when = new $Int64(0, 0);
+			this.period = new $Int64(0, 0);
+			this.f = $throwNilPointerError;
+			this.arg = $ifaceNil;
+			this.timeout = null;
+			this.active = false;
+			return;
+		}
+		this.i = i_;
+		this.when = when_;
+		this.period = period_;
+		this.f = f_;
+		this.arg = arg_;
+		this.timeout = timeout_;
+		this.active = active_;
+	});
 	ParseError = $pkg.ParseError = $newType(0, $kindStruct, "time.ParseError", true, "time", true, function(Layout_, Value_, LayoutElem_, ValueElem_, Message_) {
 		this.$val = this;
 		if (arguments.length === 0) {
@@ -12182,6 +12207,16 @@ $packages["time"] = (function() {
 		this.LayoutElem = LayoutElem_;
 		this.ValueElem = ValueElem_;
 		this.Message = Message_;
+	});
+	Timer = $pkg.Timer = $newType(0, $kindStruct, "time.Timer", true, "time", true, function(C_, r_) {
+		this.$val = this;
+		if (arguments.length === 0) {
+			this.C = $chanNil;
+			this.r = new runtimeTimer.ptr(0, new $Int64(0, 0), new $Int64(0, 0), $throwNilPointerError, $ifaceNil, null, false);
+			return;
+		}
+		this.C = C_;
+		this.r = r_;
 	});
 	Time = $pkg.Time = $newType(0, $kindStruct, "time.Time", true, "time", true, function(wall_, ext_, loc_) {
 		this.$val = this;
@@ -12251,8 +12286,13 @@ $packages["time"] = (function() {
 	arrayType$1 = $arrayType($Uint8, 9);
 	arrayType$2 = $arrayType($Uint8, 64);
 	ptrType$2 = $ptrType(Location);
+	chanType = $chanType(Time, false, false);
 	arrayType$3 = $arrayType($Uint8, 32);
+	funcType$1 = $funcType([$emptyInterface, $Uintptr], [], false);
+	ptrType$3 = $ptrType(js.Object);
 	ptrType$4 = $ptrType(ParseError);
+	ptrType$5 = $ptrType(Timer);
+	chanType$1 = $chanType(Time, false, true);
 	ptrType$7 = $ptrType(Time);
 	init = function() {
 		$unused(Unix(new $Int64(0, 0), new $Int64(0, 0)));
@@ -12286,6 +12326,33 @@ $packages["time"] = (function() {
 		nsec = _tmp$1;
 		mono = _tmp$2;
 		return [sec, nsec, mono];
+	};
+	startTimer = function(t) {
+		var diff, t, x$1, x$2;
+		t.active = true;
+		diff = $div64(((x$1 = t.when, x$2 = runtimeNano(), new $Int64(x$1.$high - x$2.$high, x$1.$low - x$2.$low))), new $Int64(0, 1000000), false);
+		if ((diff.$high > 0 || (diff.$high === 0 && diff.$low > 2147483647))) {
+			return;
+		}
+		if ((diff.$high < 0 || (diff.$high === 0 && diff.$low < 0))) {
+			diff = new $Int64(0, 0);
+		}
+		t.timeout = $setTimeout((function() {
+			var x$3, x$4, x$5;
+			t.active = false;
+			if (!((x$3 = t.period, (x$3.$high === 0 && x$3.$low === 0)))) {
+				t.when = (x$4 = t.when, x$5 = t.period, new $Int64(x$4.$high + x$5.$high, x$4.$low + x$5.$low));
+				startTimer(t);
+			}
+			$go(t.f, [t.arg, 0]);
+		}), $externalize(new $Int64(diff.$high + 0, diff.$low + 1), $Int64));
+	};
+	stopTimer = function(t) {
+		var t, wasActive;
+		$global.clearTimeout(t.timeout);
+		wasActive = t.active;
+		t.active = false;
+		return wasActive;
 	};
 	indexByte = function(s, c) {
 		var c, s;
@@ -13604,6 +13671,61 @@ $packages["time"] = (function() {
 		err = _tmp$8;
 		return [x$1, rem, err];
 	};
+	when = function(d) {
+		var d, t, x$1, x$2;
+		if ((d.$high < 0 || (d.$high === 0 && d.$low <= 0))) {
+			return runtimeNano();
+		}
+		t = (x$1 = runtimeNano(), x$2 = (new $Int64(d.$high, d.$low)), new $Int64(x$1.$high + x$2.$high, x$1.$low + x$2.$low));
+		if ((t.$high < 0 || (t.$high === 0 && t.$low < 0))) {
+			t = new $Int64(2147483647, 4294967295);
+		}
+		return t;
+	};
+	Timer.ptr.prototype.Stop = function() {
+		var t;
+		t = this;
+		if (t.r.f === $throwNilPointerError) {
+			$panic(new $String("time: Stop called on uninitialized Timer"));
+		}
+		return stopTimer(t.r);
+	};
+	Timer.prototype.Stop = function() { return this.$val.Stop(); };
+	NewTimer = function(d) {
+		var c, d, t;
+		c = new $Chan(Time, 1);
+		t = new Timer.ptr(c, new runtimeTimer.ptr(0, when(d), new $Int64(0, 0), sendTime, new chanType(c), null, false));
+		startTimer(t.r);
+		return t;
+	};
+	$pkg.NewTimer = NewTimer;
+	Timer.ptr.prototype.Reset = function(d) {
+		var active, d, t, w;
+		t = this;
+		if (t.r.f === $throwNilPointerError) {
+			$panic(new $String("time: Reset called on uninitialized Timer"));
+		}
+		w = when(d);
+		active = stopTimer(t.r);
+		t.r.when = w;
+		startTimer(t.r);
+		return active;
+	};
+	Timer.prototype.Reset = function(d) { return this.$val.Reset(d); };
+	sendTime = function(c, seq) {
+		var _selection, c, seq, $r;
+		/* */ var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _selection = $f._selection; c = $f.c; seq = $f.seq; $r = $f.$r; }
+		_selection = $select([[$assertType(c, chanType), $clone(Now(), Time)], []]);
+		if (_selection[0] === 0) {
+		} else if (_selection[0] === 1) {
+		}
+		/* */ if ($f === undefined) { $f = { $blk: sendTime }; } $f._selection = _selection; $f.c = c; $f.seq = seq; $f.$r = $r; return $f;
+	};
+	After = function(d) {
+		var d;
+		return NewTimer(d).C;
+	};
+	$pkg.After = After;
 	Time.ptr.prototype.nsec = function() {
 		var t, x$1;
 		t = this;
@@ -14913,13 +15035,16 @@ $packages["time"] = (function() {
 	};
 	Location.prototype.lookupName = function(name, unix) { return this.$val.lookupName(name, unix); };
 	ptrType$4.methods = [{prop: "Error", name: "Error", pkg: "", typ: $funcType([], [$String], false)}];
+	ptrType$5.methods = [{prop: "Stop", name: "Stop", pkg: "", typ: $funcType([], [$Bool], false)}, {prop: "Reset", name: "Reset", pkg: "", typ: $funcType([Duration], [$Bool], false)}];
 	Time.methods = [{prop: "String", name: "String", pkg: "", typ: $funcType([], [$String], false)}, {prop: "Format", name: "Format", pkg: "", typ: $funcType([$String], [$String], false)}, {prop: "AppendFormat", name: "AppendFormat", pkg: "", typ: $funcType([sliceType$3, $String], [sliceType$3], false)}, {prop: "After", name: "After", pkg: "", typ: $funcType([Time], [$Bool], false)}, {prop: "Before", name: "Before", pkg: "", typ: $funcType([Time], [$Bool], false)}, {prop: "Equal", name: "Equal", pkg: "", typ: $funcType([Time], [$Bool], false)}, {prop: "IsZero", name: "IsZero", pkg: "", typ: $funcType([], [$Bool], false)}, {prop: "abs", name: "abs", pkg: "time", typ: $funcType([], [$Uint64], false)}, {prop: "locabs", name: "locabs", pkg: "time", typ: $funcType([], [$String, $Int, $Uint64], false)}, {prop: "Date", name: "Date", pkg: "", typ: $funcType([], [$Int, Month, $Int], false)}, {prop: "Year", name: "Year", pkg: "", typ: $funcType([], [$Int], false)}, {prop: "Month", name: "Month", pkg: "", typ: $funcType([], [Month], false)}, {prop: "Day", name: "Day", pkg: "", typ: $funcType([], [$Int], false)}, {prop: "Weekday", name: "Weekday", pkg: "", typ: $funcType([], [Weekday], false)}, {prop: "ISOWeek", name: "ISOWeek", pkg: "", typ: $funcType([], [$Int, $Int], false)}, {prop: "Clock", name: "Clock", pkg: "", typ: $funcType([], [$Int, $Int, $Int], false)}, {prop: "Hour", name: "Hour", pkg: "", typ: $funcType([], [$Int], false)}, {prop: "Minute", name: "Minute", pkg: "", typ: $funcType([], [$Int], false)}, {prop: "Second", name: "Second", pkg: "", typ: $funcType([], [$Int], false)}, {prop: "Nanosecond", name: "Nanosecond", pkg: "", typ: $funcType([], [$Int], false)}, {prop: "YearDay", name: "YearDay", pkg: "", typ: $funcType([], [$Int], false)}, {prop: "Add", name: "Add", pkg: "", typ: $funcType([Duration], [Time], false)}, {prop: "Sub", name: "Sub", pkg: "", typ: $funcType([Time], [Duration], false)}, {prop: "AddDate", name: "AddDate", pkg: "", typ: $funcType([$Int, $Int, $Int], [Time], false)}, {prop: "date", name: "date", pkg: "time", typ: $funcType([$Bool], [$Int, Month, $Int, $Int], false)}, {prop: "UTC", name: "UTC", pkg: "", typ: $funcType([], [Time], false)}, {prop: "Local", name: "Local", pkg: "", typ: $funcType([], [Time], false)}, {prop: "In", name: "In", pkg: "", typ: $funcType([ptrType$2], [Time], false)}, {prop: "Location", name: "Location", pkg: "", typ: $funcType([], [ptrType$2], false)}, {prop: "Zone", name: "Zone", pkg: "", typ: $funcType([], [$String, $Int], false)}, {prop: "Unix", name: "Unix", pkg: "", typ: $funcType([], [$Int64], false)}, {prop: "UnixNano", name: "UnixNano", pkg: "", typ: $funcType([], [$Int64], false)}, {prop: "MarshalBinary", name: "MarshalBinary", pkg: "", typ: $funcType([], [sliceType$3, $error], false)}, {prop: "GobEncode", name: "GobEncode", pkg: "", typ: $funcType([], [sliceType$3, $error], false)}, {prop: "MarshalJSON", name: "MarshalJSON", pkg: "", typ: $funcType([], [sliceType$3, $error], false)}, {prop: "MarshalText", name: "MarshalText", pkg: "", typ: $funcType([], [sliceType$3, $error], false)}, {prop: "Truncate", name: "Truncate", pkg: "", typ: $funcType([Duration], [Time], false)}, {prop: "Round", name: "Round", pkg: "", typ: $funcType([Duration], [Time], false)}];
 	ptrType$7.methods = [{prop: "nsec", name: "nsec", pkg: "time", typ: $funcType([], [$Int32], false)}, {prop: "sec", name: "sec", pkg: "time", typ: $funcType([], [$Int64], false)}, {prop: "unixSec", name: "unixSec", pkg: "time", typ: $funcType([], [$Int64], false)}, {prop: "addSec", name: "addSec", pkg: "time", typ: $funcType([$Int64], [], false)}, {prop: "setLoc", name: "setLoc", pkg: "time", typ: $funcType([ptrType$2], [], false)}, {prop: "stripMono", name: "stripMono", pkg: "time", typ: $funcType([], [], false)}, {prop: "setMono", name: "setMono", pkg: "time", typ: $funcType([$Int64], [], false)}, {prop: "mono", name: "mono", pkg: "time", typ: $funcType([], [$Int64], false)}, {prop: "UnmarshalBinary", name: "UnmarshalBinary", pkg: "", typ: $funcType([sliceType$3], [$error], false)}, {prop: "GobDecode", name: "GobDecode", pkg: "", typ: $funcType([sliceType$3], [$error], false)}, {prop: "UnmarshalJSON", name: "UnmarshalJSON", pkg: "", typ: $funcType([sliceType$3], [$error], false)}, {prop: "UnmarshalText", name: "UnmarshalText", pkg: "", typ: $funcType([sliceType$3], [$error], false)}];
 	Month.methods = [{prop: "String", name: "String", pkg: "", typ: $funcType([], [$String], false)}];
 	Weekday.methods = [{prop: "String", name: "String", pkg: "", typ: $funcType([], [$String], false)}];
 	Duration.methods = [{prop: "String", name: "String", pkg: "", typ: $funcType([], [$String], false)}, {prop: "Nanoseconds", name: "Nanoseconds", pkg: "", typ: $funcType([], [$Int64], false)}, {prop: "Seconds", name: "Seconds", pkg: "", typ: $funcType([], [$Float64], false)}, {prop: "Minutes", name: "Minutes", pkg: "", typ: $funcType([], [$Float64], false)}, {prop: "Hours", name: "Hours", pkg: "", typ: $funcType([], [$Float64], false)}, {prop: "Truncate", name: "Truncate", pkg: "", typ: $funcType([Duration], [Duration], false)}, {prop: "Round", name: "Round", pkg: "", typ: $funcType([Duration], [Duration], false)}];
 	ptrType$2.methods = [{prop: "get", name: "get", pkg: "time", typ: $funcType([], [ptrType$2], false)}, {prop: "String", name: "String", pkg: "", typ: $funcType([], [$String], false)}, {prop: "lookup", name: "lookup", pkg: "time", typ: $funcType([$Int64], [$String, $Int, $Int64, $Int64], false)}, {prop: "lookupFirstZone", name: "lookupFirstZone", pkg: "time", typ: $funcType([], [$Int], false)}, {prop: "firstZoneUsed", name: "firstZoneUsed", pkg: "time", typ: $funcType([], [$Bool], false)}, {prop: "lookupName", name: "lookupName", pkg: "time", typ: $funcType([$String, $Int64], [$Int, $Bool], false)}];
+	runtimeTimer.init("time", [{prop: "i", name: "i", embedded: false, exported: false, typ: $Int32, tag: ""}, {prop: "when", name: "when", embedded: false, exported: false, typ: $Int64, tag: ""}, {prop: "period", name: "period", embedded: false, exported: false, typ: $Int64, tag: ""}, {prop: "f", name: "f", embedded: false, exported: false, typ: funcType$1, tag: ""}, {prop: "arg", name: "arg", embedded: false, exported: false, typ: $emptyInterface, tag: ""}, {prop: "timeout", name: "timeout", embedded: false, exported: false, typ: ptrType$3, tag: ""}, {prop: "active", name: "active", embedded: false, exported: false, typ: $Bool, tag: ""}]);
 	ParseError.init("", [{prop: "Layout", name: "Layout", embedded: false, exported: true, typ: $String, tag: ""}, {prop: "Value", name: "Value", embedded: false, exported: true, typ: $String, tag: ""}, {prop: "LayoutElem", name: "LayoutElem", embedded: false, exported: true, typ: $String, tag: ""}, {prop: "ValueElem", name: "ValueElem", embedded: false, exported: true, typ: $String, tag: ""}, {prop: "Message", name: "Message", embedded: false, exported: true, typ: $String, tag: ""}]);
+	Timer.init("time", [{prop: "C", name: "C", embedded: false, exported: true, typ: chanType$1, tag: ""}, {prop: "r", name: "r", embedded: false, exported: false, typ: runtimeTimer, tag: ""}]);
 	Time.init("time", [{prop: "wall", name: "wall", embedded: false, exported: false, typ: $Uint64, tag: ""}, {prop: "ext", name: "ext", embedded: false, exported: false, typ: $Int64, tag: ""}, {prop: "loc", name: "loc", embedded: false, exported: false, typ: ptrType$2, tag: ""}]);
 	Location.init("time", [{prop: "name", name: "name", embedded: false, exported: false, typ: $String, tag: ""}, {prop: "zone", name: "zone", embedded: false, exported: false, typ: sliceType, tag: ""}, {prop: "tx", name: "tx", embedded: false, exported: false, typ: sliceType$1, tag: ""}, {prop: "cacheStart", name: "cacheStart", embedded: false, exported: false, typ: $Int64, tag: ""}, {prop: "cacheEnd", name: "cacheEnd", embedded: false, exported: false, typ: $Int64, tag: ""}, {prop: "cacheZone", name: "cacheZone", embedded: false, exported: false, typ: ptrType, tag: ""}]);
 	zone.init("time", [{prop: "name", name: "name", embedded: false, exported: false, typ: $String, tag: ""}, {prop: "offset", name: "offset", embedded: false, exported: false, typ: $Int, tag: ""}, {prop: "isDST", name: "isDST", embedded: false, exported: false, typ: $Bool, tag: ""}]);
@@ -31952,7 +32077,7 @@ $packages["math/rand"] = (function() {
 	return $pkg;
 })();
 $packages["."] = (function() {
-	var $pkg = {}, $init, fmt, dom, math, rand, js, time, dragState, image, Puzzle, ptrType, ptrType$1, ptrType$2, sliceType, sliceType$1, sliceType$2, ptrType$3, ptrType$4, sliceType$3, sliceType$4, ptrType$5, ptrType$6, sliceType$5, sliceType$6, sliceType$7, marginPercent, animateSlope, animateScale, maxAnimationLeft, dragThresholdPx, dragBias, dragBiasMs, dragClickMs, pixelsPerScrollStep, shuffleRounds, moveSound, qs, canvas, offscreen, ctx, lock, instantRedraw, prevTime, currentPuzzle, currentPuzzle$24ptr, _r, setupDragging, initializeInteraction, main, resize, draw, redraw, _redraw, loadImage, drawOffscreenImage, drawFrame, playSound, NewPuzzle, fmod, imod, iclamp, imax, setFloats, setFloats2, setBools, setBools2, absMax, absMax2, identityMap, isIdentity, devicePixelRatio, pageXY;
+	var $pkg = {}, $init, fmt, dom, math, rand, js, time, dragState, image, Puzzle, ptrType, ptrType$1, ptrType$2, sliceType, sliceType$1, sliceType$2, sliceType$3, ptrType$3, ptrType$4, ptrType$5, sliceType$4, ptrType$6, ptrType$7, sliceType$5, sliceType$6, sliceType$7, marginPercent, maxInnerAspect, maxFullscreenWidth, maxAnimationLeft, animateSlope, animateScale, dragThresholdPx, dragBias, dragBiasMs0, dragBiasMs1, dragClickMs, wheelStepPx, shuffleTime, defaultShuffleRounds, moveSound, playSoundAt, qs, canvas, offscreen, ctx, redrawPending, instantRedraw, shuffleRounds, shufflePending, shuffleStart, startTime, prevTime, currentPuzzle, currentPuzzle$24ptr, images, rotateAudio, _r, setupDragging, initializeInteraction, main, pickRandomPuzzle, shufflePuzzle, completePuzzle, loadImage, setDivDisplay, NewPuzzle, resize, draw, redraw, _redraw, drawOffscreenImage, drawFrame, playSound, fmod, imod, iclamp, imax, setFloats, setFloats2, setBools, setBools2, absMax, absMax2, identityMap, isIdentity, devicePixelRatio, pageXY;
 	fmt = $packages["fmt"];
 	dom = $packages["honnef.co/go/js/dom/v2"];
 	math = $packages["math"];
@@ -31964,8 +32089,8 @@ $packages["."] = (function() {
 		if (arguments.length === 0) {
 			this.pz = ptrType$2.nil;
 			this.t0 = new $Int64(0, 0);
-			this.coord0 = sliceType$1.nil;
-			this.coord1 = sliceType$1.nil;
+			this.coord0 = sliceType$3.nil;
+			this.coord1 = sliceType$3.nil;
 			this.pos = sliceType$2.nil;
 			this.axis = 0;
 			return;
@@ -31977,19 +32102,19 @@ $packages["."] = (function() {
 		this.pos = pos_;
 		this.axis = axis_;
 	});
-	image = $pkg.image = $newType(0, $kindStruct, "main.image", true, ".", false, function(name_, min_, max_) {
+	image = $pkg.image = $newType(0, $kindStruct, "main.image", true, ".", false, function(path_, min_, max_) {
 		this.$val = this;
 		if (arguments.length === 0) {
-			this.name = "";
-			this.min = sliceType$2.nil;
-			this.max = sliceType$2.nil;
+			this.path = "";
+			this.min = 0;
+			this.max = 0;
 			return;
 		}
-		this.name = name_;
+		this.path = path_;
 		this.min = min_;
 		this.max = max_;
 	});
-	Puzzle = $pkg.Puzzle = $newType(0, $kindStruct, "main.Puzzle", true, ".", true, function(image_, size_, offsets_, animate_, state_, moves_, completed_, interactive_, showGrid_, pendingSound_, dstOrigin_, dstTile_, dstSize_) {
+	Puzzle = $pkg.Puzzle = $newType(0, $kindStruct, "main.Puzzle", true, ".", true, function(image_, size_, offsets_, animate_, state_, moves_, showGrid_, completed_, interactive_, pendingSound_, dstOrigin_, dstTile_, dstSize_) {
 		this.$val = this;
 		if (arguments.length === 0) {
 			this.image = ptrType$6.nil;
@@ -31998,13 +32123,13 @@ $packages["."] = (function() {
 			this.animate = sliceType$7.nil;
 			this.state = sliceType$2.nil;
 			this.moves = 0;
+			this.showGrid = false;
 			this.completed = false;
 			this.interactive = false;
-			this.showGrid = false;
 			this.pendingSound = "";
-			this.dstOrigin = sliceType$1.nil;
-			this.dstTile = sliceType$1.nil;
-			this.dstSize = sliceType$1.nil;
+			this.dstOrigin = sliceType$3.nil;
+			this.dstTile = sliceType$3.nil;
+			this.dstSize = sliceType$3.nil;
 			return;
 		}
 		this.image = image_;
@@ -32013,9 +32138,9 @@ $packages["."] = (function() {
 		this.animate = animate_;
 		this.state = state_;
 		this.moves = moves_;
+		this.showGrid = showGrid_;
 		this.completed = completed_;
 		this.interactive = interactive_;
-		this.showGrid = showGrid_;
 		this.pendingSound = pendingSound_;
 		this.dstOrigin = dstOrigin_;
 		this.dstTile = dstTile_;
@@ -32025,20 +32150,21 @@ $packages["."] = (function() {
 	ptrType$1 = $ptrType(dom.CanvasRenderingContext2D);
 	ptrType$2 = $ptrType(Puzzle);
 	sliceType = $sliceType($String);
-	sliceType$1 = $sliceType($Float64);
+	sliceType$1 = $sliceType(image);
 	sliceType$2 = $sliceType($Int);
+	sliceType$3 = $sliceType($Float64);
 	ptrType$3 = $ptrType(dragState);
 	ptrType$4 = $ptrType(dom.WheelEvent);
-	sliceType$3 = $sliceType(image);
-	sliceType$4 = $sliceType($emptyInterface);
 	ptrType$5 = $ptrType(ptrType$2);
+	sliceType$4 = $sliceType($emptyInterface);
 	ptrType$6 = $ptrType(dom.HTMLImageElement);
-	sliceType$5 = $sliceType(sliceType$1);
+	ptrType$7 = $ptrType(dom.HTMLDivElement);
+	sliceType$5 = $sliceType(sliceType$3);
 	sliceType$6 = $sliceType($Bool);
 	sliceType$7 = $sliceType(sliceType$6);
 	setupDragging = function(pz, coord) {
 		var coord, pz, s;
-		s = new dragState.ptr(ptrType$2.nil, new $Int64(0, 0), sliceType$1.nil, sliceType$1.nil, sliceType$2.nil, 0);
+		s = new dragState.ptr(ptrType$2.nil, new $Int64(0, 0), sliceType$3.nil, sliceType$3.nil, sliceType$2.nil, 0);
 		s.pz = pz;
 		s.axis = -1;
 		s.t0 = $clone(time.Now(), time.Time).UnixNano();
@@ -32050,8 +32176,8 @@ $packages["."] = (function() {
 	dragState.ptr.prototype.offset = function() {
 		var _i, _ref, absOffset, i, offset, s, x, x$1;
 		s = this;
-		offset = $makeSlice(sliceType$1, s.coord0.$length);
-		absOffset = $makeSlice(sliceType$1, s.coord0.$length);
+		offset = $makeSlice(sliceType$3, s.coord0.$length);
+		absOffset = $makeSlice(sliceType$3, s.coord0.$length);
 		_ref = s.coord1;
 		_i = 0;
 		while (true) {
@@ -32113,12 +32239,14 @@ $packages["."] = (function() {
 	};
 	dragState.prototype.move = function(coord) { return this.$val.move(coord); };
 	dragState.ptr.prototype.apply = function() {
-		var _i, _index, _r$1, _ref, _tuple, axis, bias, dtMs, edge, inside, offset, s, steps, x, x$1, x$10, x$11, x$12, x$13, x$14, x$15, x$16, x$17, x$18, x$19, x$2, x$20, x$21, x$22, x$23, x$24, x$25, x$26, x$27, x$28, x$29, x$3, x$30, x$31, x$32, x$33, x$4, x$5, x$6, x$7, x$8, x$9, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _i = $f._i; _index = $f._index; _r$1 = $f._r$1; _ref = $f._ref; _tuple = $f._tuple; axis = $f.axis; bias = $f.bias; dtMs = $f.dtMs; edge = $f.edge; inside = $f.inside; offset = $f.offset; s = $f.s; steps = $f.steps; x = $f.x; x$1 = $f.x$1; x$10 = $f.x$10; x$11 = $f.x$11; x$12 = $f.x$12; x$13 = $f.x$13; x$14 = $f.x$14; x$15 = $f.x$15; x$16 = $f.x$16; x$17 = $f.x$17; x$18 = $f.x$18; x$19 = $f.x$19; x$2 = $f.x$2; x$20 = $f.x$20; x$21 = $f.x$21; x$22 = $f.x$22; x$23 = $f.x$23; x$24 = $f.x$24; x$25 = $f.x$25; x$26 = $f.x$26; x$27 = $f.x$27; x$28 = $f.x$28; x$29 = $f.x$29; x$3 = $f.x$3; x$30 = $f.x$30; x$31 = $f.x$31; x$32 = $f.x$32; x$33 = $f.x$33; x$4 = $f.x$4; x$5 = $f.x$5; x$6 = $f.x$6; x$7 = $f.x$7; x$8 = $f.x$8; x$9 = $f.x$9; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var _i, _index, _r$1, _ref, _tuple, axis, bias, dtMs, edge, factor, inside, offset, playSoundNow, s, steps, x, x$1, x$10, x$11, x$12, x$13, x$14, x$15, x$16, x$17, x$18, x$19, x$2, x$20, x$21, x$22, x$23, x$24, x$25, x$26, x$27, x$28, x$29, x$3, x$30, x$31, x$32, x$33, x$34, x$4, x$5, x$6, x$7, x$8, x$9, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _i = $f._i; _index = $f._index; _r$1 = $f._r$1; _ref = $f._ref; _tuple = $f._tuple; axis = $f.axis; bias = $f.bias; dtMs = $f.dtMs; edge = $f.edge; factor = $f.factor; inside = $f.inside; offset = $f.offset; playSoundNow = $f.playSoundNow; s = $f.s; steps = $f.steps; x = $f.x; x$1 = $f.x$1; x$10 = $f.x$10; x$11 = $f.x$11; x$12 = $f.x$12; x$13 = $f.x$13; x$14 = $f.x$14; x$15 = $f.x$15; x$16 = $f.x$16; x$17 = $f.x$17; x$18 = $f.x$18; x$19 = $f.x$19; x$2 = $f.x$2; x$20 = $f.x$20; x$21 = $f.x$21; x$22 = $f.x$22; x$23 = $f.x$23; x$24 = $f.x$24; x$25 = $f.x$25; x$26 = $f.x$26; x$27 = $f.x$27; x$28 = $f.x$28; x$29 = $f.x$29; x$3 = $f.x$3; x$30 = $f.x$30; x$31 = $f.x$31; x$32 = $f.x$32; x$33 = $f.x$33; x$34 = $f.x$34; x$4 = $f.x$4; x$5 = $f.x$5; x$6 = $f.x$6; x$7 = $f.x$7; x$8 = $f.x$8; x$9 = $f.x$9; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		s = this;
+		playSoundNow = false;
 		dtMs = $div64(((x = $clone(time.Now(), time.Time).UnixNano(), x$1 = s.t0, new $Int64(x.$high - x$1.$high, x.$low - x$1.$low))), new $Int64(0, 1000000), false);
 		steps = 0;
 		if (s.axis === -1) {
+			playSoundNow = true;
 			inside = true;
 			_ref = s.coord1;
 			_i = 0;
@@ -32148,21 +32276,32 @@ $packages["."] = (function() {
 		} else {
 			offset = (x$5 = (x$6 = s.pz.offsets, x$7 = s.axis, ((x$7 < 0 || x$7 >= x$6.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$6.$array[x$6.$offset + x$7])), x$8 = (x$9 = s.pos, x$10 = 1 - s.axis >> 0, ((x$10 < 0 || x$10 >= x$9.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$9.$array[x$9.$offset + x$10])), ((x$8 < 0 || x$8 >= x$5.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$5.$array[x$5.$offset + x$8]));
 			bias = 0;
-			if ((dtMs.$high < dragBiasMs.$high || (dtMs.$high === dragBiasMs.$high && dtMs.$low < dragBiasMs.$low))) {
-				bias = math.Copysign(dragBias, offset);
+			if ((dtMs.$high < dragBiasMs1.$high || (dtMs.$high === dragBiasMs1.$high && dtMs.$low < dragBiasMs1.$low))) {
+				factor = 1 - ($flatten64(new $Int64(dtMs.$high - dragBiasMs0.$high, dtMs.$low - dragBiasMs0.$low))) / ($flatten64(new $Int64(dragBiasMs1.$high - dragBiasMs0.$high, dragBiasMs1.$low - dragBiasMs0.$low)));
+				factor = math.Min(1, factor);
+				bias = math.Copysign(factor * dragBias, offset);
 			}
 			steps = math.Round(offset / (x$11 = s.pz.dstTile, x$12 = s.axis, ((x$12 < 0 || x$12 >= x$11.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$11.$array[x$11.$offset + x$12])) + bias);
 		}
-		if (!((steps === 0))) {
+		/* */ if (!((steps === 0))) { $s = 1; continue; }
+		/* */ $s = 2; continue;
+		/* if (!((steps === 0))) { */ case 1:
 			_index = 1 - s.axis >> 0;
 			(x$20 = (x$21 = s.pz.offsets, x$22 = s.axis, ((x$22 < 0 || x$22 >= x$21.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$21.$array[x$21.$offset + x$22])), x$23 = (x$24 = s.pos, ((_index < 0 || _index >= x$24.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$24.$array[x$24.$offset + _index])), ((x$23 < 0 || x$23 >= x$20.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$20.$array[x$20.$offset + x$23] = (x$13 = (x$14 = s.pz.offsets, x$15 = s.axis, ((x$15 < 0 || x$15 >= x$14.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$14.$array[x$14.$offset + x$15])), x$16 = (x$17 = s.pos, ((_index < 0 || _index >= x$17.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$17.$array[x$17.$offset + _index])), ((x$16 < 0 || x$16 >= x$13.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$13.$array[x$13.$offset + x$16])) - (steps * (x$18 = s.pz.dstTile, x$19 = s.axis, ((x$19 < 0 || x$19 >= x$18.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$18.$array[x$18.$offset + x$19])))));
 			s.pz.Rotate(s.axis, (x$25 = s.pos, x$26 = 1 - s.axis >> 0, ((x$26 < 0 || x$26 >= x$25.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$25.$array[x$25.$offset + x$26])), ((steps >> 0)));
-			s.pz.pendingSound = (x$27 = s.axis, ((x$27 < 0 || x$27 >= moveSound.$length) ? ($throwRuntimeError("index out of range"), undefined) : moveSound.$array[moveSound.$offset + x$27]));
-		}
-		(x$28 = (x$29 = s.pz.animate, x$30 = s.axis, ((x$30 < 0 || x$30 >= x$29.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$29.$array[x$29.$offset + x$30])), x$31 = (x$32 = s.pos, x$33 = 1 - s.axis >> 0, ((x$33 < 0 || x$33 >= x$32.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$32.$array[x$32.$offset + x$33])), ((x$31 < 0 || x$31 >= x$28.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$28.$array[x$28.$offset + x$31] = true));
-		$r = redraw(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			/* */ if (playSoundNow) { $s = 3; continue; }
+			/* */ $s = 4; continue;
+			/* if (playSoundNow) { */ case 3:
+				$r = playSound((x$27 = s.axis, ((x$27 < 0 || x$27 >= moveSound.$length) ? ($throwRuntimeError("index out of range"), undefined) : moveSound.$array[moveSound.$offset + x$27]))); /* */ $s = 6; case 6: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+				$s = 5; continue;
+			/* } else { */ case 4:
+				s.pz.pendingSound = (x$28 = s.axis, ((x$28 < 0 || x$28 >= moveSound.$length) ? ($throwRuntimeError("index out of range"), undefined) : moveSound.$array[moveSound.$offset + x$28]));
+			/* } */ case 5:
+		/* } */ case 2:
+		(x$29 = (x$30 = s.pz.animate, x$31 = s.axis, ((x$31 < 0 || x$31 >= x$30.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$30.$array[x$30.$offset + x$31])), x$32 = (x$33 = s.pos, x$34 = 1 - s.axis >> 0, ((x$34 < 0 || x$34 >= x$33.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$33.$array[x$33.$offset + x$34])), ((x$32 < 0 || x$32 >= x$29.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$29.$array[x$29.$offset + x$32] = true));
+		$r = redraw(); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$s = -1; return;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: dragState.ptr.prototype.apply }; } $f._i = _i; $f._index = _index; $f._r$1 = _r$1; $f._ref = _ref; $f._tuple = _tuple; $f.axis = axis; $f.bias = bias; $f.dtMs = dtMs; $f.edge = edge; $f.inside = inside; $f.offset = offset; $f.s = s; $f.steps = steps; $f.x = x; $f.x$1 = x$1; $f.x$10 = x$10; $f.x$11 = x$11; $f.x$12 = x$12; $f.x$13 = x$13; $f.x$14 = x$14; $f.x$15 = x$15; $f.x$16 = x$16; $f.x$17 = x$17; $f.x$18 = x$18; $f.x$19 = x$19; $f.x$2 = x$2; $f.x$20 = x$20; $f.x$21 = x$21; $f.x$22 = x$22; $f.x$23 = x$23; $f.x$24 = x$24; $f.x$25 = x$25; $f.x$26 = x$26; $f.x$27 = x$27; $f.x$28 = x$28; $f.x$29 = x$29; $f.x$3 = x$3; $f.x$30 = x$30; $f.x$31 = x$31; $f.x$32 = x$32; $f.x$33 = x$33; $f.x$4 = x$4; $f.x$5 = x$5; $f.x$6 = x$6; $f.x$7 = x$7; $f.x$8 = x$8; $f.x$9 = x$9; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: dragState.ptr.prototype.apply }; } $f._i = _i; $f._index = _index; $f._r$1 = _r$1; $f._ref = _ref; $f._tuple = _tuple; $f.axis = axis; $f.bias = bias; $f.dtMs = dtMs; $f.edge = edge; $f.factor = factor; $f.inside = inside; $f.offset = offset; $f.playSoundNow = playSoundNow; $f.s = s; $f.steps = steps; $f.x = x; $f.x$1 = x$1; $f.x$10 = x$10; $f.x$11 = x$11; $f.x$12 = x$12; $f.x$13 = x$13; $f.x$14 = x$14; $f.x$15 = x$15; $f.x$16 = x$16; $f.x$17 = x$17; $f.x$18 = x$18; $f.x$19 = x$19; $f.x$2 = x$2; $f.x$20 = x$20; $f.x$21 = x$21; $f.x$22 = x$22; $f.x$23 = x$23; $f.x$24 = x$24; $f.x$25 = x$25; $f.x$26 = x$26; $f.x$27 = x$27; $f.x$28 = x$28; $f.x$29 = x$29; $f.x$3 = x$3; $f.x$30 = x$30; $f.x$31 = x$31; $f.x$32 = x$32; $f.x$33 = x$33; $f.x$34 = x$34; $f.x$4 = x$4; $f.x$5 = x$5; $f.x$6 = x$6; $f.x$7 = x$7; $f.x$8 = x$8; $f.x$9 = x$9; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	dragState.prototype.apply = function() { return this.$val.apply(); };
 	initializeInteraction = function(canvas$1, puzzle) {
@@ -32313,8 +32452,8 @@ $packages["."] = (function() {
 			axis = -1;
 			steps = 0;
 			if (ev.DeltaMode() === 0) {
-				deltaX[0] = deltaX[0] + (ev.DeltaX() / pixelsPerScrollStep);
-				deltaY[0] = deltaY[0] + (ev.DeltaY() / pixelsPerScrollStep);
+				deltaX[0] = deltaX[0] + (ev.DeltaX() / wheelStepPx);
+				deltaY[0] = deltaY[0] + (ev.DeltaY() / wheelStepPx);
 				stepsX = math.Trunc(deltaX[0]);
 				stepsY = math.Trunc(deltaY[0]);
 				deltaX[0] = deltaX[0] - (stepsX);
@@ -32366,9 +32505,8 @@ $packages["."] = (function() {
 		/* */ } return; } if ($f === undefined) { $f = { $blk: initializeInteraction }; } $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._tmp = _tmp; $f._tmp$1 = _tmp$1; $f.canvas$1 = canvas$1; $f.deltaX = deltaX; $f.deltaY = deltaY; $f.pointerDown = pointerDown; $f.pointerMove = pointerMove; $f.pointerUp = pointerUp; $f.puzzle = puzzle; $f.state = state; $f.syncAxes = syncAxes; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	main = function() {
-		var _i, _r$1, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, _r$8, _r$9, _ref, axis, images, img, min, path, size, window, x, x$1, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _i = $f._i; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _r$7 = $f._r$7; _r$8 = $f._r$8; _r$9 = $f._r$9; _ref = $f._ref; axis = $f.axis; images = $f.images; img = $f.img; min = $f.min; path = $f.path; size = $f.size; window = $f.window; x = $f.x; x$1 = $f.x$1; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		size = [size];
+		var _r$1, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, _r$8, window, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _r$7 = $f._r$7; _r$8 = $f._r$8; window = $f.window; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		$r = rand.Seed($clone($clone(time.Now(), time.Time).UTC(), time.Time).UnixNano()); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		window = dom.GetWindow();
 		_r$1 = qs("#screen"); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
@@ -32377,45 +32515,379 @@ $packages["."] = (function() {
 		offscreen = $assertType(_r$2, ptrType);
 		_r$3 = canvas.GetContext2d(); /* */ $s = 4; case 4: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
 		ctx = _r$3;
-		images = new sliceType$3([new image.ptr("baloon", new sliceType$2([3, 2]), new sliceType$2([4, 3])), new image.ptr("grass", new sliceType$2([3, 2]), new sliceType$2([7, 5])), new image.ptr("iceland", new sliceType$2([3, 2]), new sliceType$2([6, 4])), new image.ptr("niagara", new sliceType$2([3, 2]), new sliceType$2([8, 6])), new image.ptr("peafowl", new sliceType$2([5, 3]), new sliceType$2([9, 6]))]);
-		_r$5 = rand.Int(); /* */ $s = 5; case 5: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
-		img = $clone((x = (_r$4 = _r$5 % images.$length, _r$4 === _r$4 ? _r$4 : $throwRuntimeError("integer divide by zero")), ((x < 0 || x >= images.$length) ? ($throwRuntimeError("index out of range"), undefined) : images.$array[images.$offset + x])), image);
-		_r$6 = fmt.Sprintf("assets/puzzles/%v.jpg", new sliceType$4([new $String(img.name)])); /* */ $s = 6; case 6: if($c) { $c = false; _r$6 = _r$6.$blk(); } if (_r$6 && _r$6.$blk !== undefined) { break s; }
-		path = _r$6;
-		size[0] = $makeSlice(sliceType$2, img.min.$length);
-		_ref = img.min;
-		_i = 0;
-		/* while (true) { */ case 7:
-			/* if (!(_i < _ref.$length)) { break; } */ if(!(_i < _ref.$length)) { $s = 8; continue; }
-			axis = _i;
-			min = ((_i < 0 || _i >= _ref.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref.$array[_ref.$offset + _i]);
-			_r$8 = rand.Int(); /* */ $s = 9; case 9: if($c) { $c = false; _r$8 = _r$8.$blk(); } if (_r$8 && _r$8.$blk !== undefined) { break s; }
-			((axis < 0 || axis >= size[0].$length) ? ($throwRuntimeError("index out of range"), undefined) : size[0].$array[size[0].$offset + axis] = (min + (_r$7 = _r$8 % ((((x$1 = img.max, ((axis < 0 || axis >= x$1.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$1.$array[x$1.$offset + axis])) - min >> 0) + 1 >> 0)), _r$7 === _r$7 ? _r$7 : $throwRuntimeError("integer divide by zero")) >> 0));
-			_i++;
-		/* } */ $s = 7; continue; case 8:
-		$r = loadImage(path, (function(size) { return function $b(image$1) {
-			var _r$9, image$1, $s, $r;
-			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r$9 = $f._r$9; image$1 = $f.image$1; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-			_r$9 = NewPuzzle(image$1, size[0]); /* */ $s = 1; case 1: if($c) { $c = false; _r$9 = _r$9.$blk(); } if (_r$9 && _r$9.$blk !== undefined) { break s; }
-			currentPuzzle = _r$9;
-			shuffleRounds = 5;
-			$r = redraw(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-			$s = -1; return;
-			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f._r$9 = _r$9; $f.image$1 = image$1; $f.$s = $s; $f.$r = $r; return $f;
-		}; })(size)); /* */ $s = 10; case 10: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = initializeInteraction(canvas, (currentPuzzle$24ptr || (currentPuzzle$24ptr = new ptrType$5(function() { return currentPuzzle; }, function($v) { currentPuzzle = $v; })))); /* */ $s = 11; case 11: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		_r$9 = window.AddEventListener("resize", false, (function(size) { return function $b(e) {
+		$r = initializeInteraction(canvas, (currentPuzzle$24ptr || (currentPuzzle$24ptr = new ptrType$5(function() { return currentPuzzle; }, function($v) { currentPuzzle = $v; })))); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		_r$4 = window.AddEventListener("resize", false, (function $b(e) {
 			var e, $s, $r;
 			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; e = $f.e; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 			$r = resize(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 			$s = -1; return;
 			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.e = e; $f.$s = $s; $f.$r = $r; return $f;
-		}; })(size)); /* */ $s = 12; case 12: if($c) { $c = false; _r$9 = _r$9.$blk(); } if (_r$9 && _r$9.$blk !== undefined) { break s; }
-		_r$9;
-		$r = resize(); /* */ $s = 13; case 13: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		})); /* */ $s = 6; case 6: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
+		_r$4;
+		$r = resize(); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		_r$5 = qs("#reshuffle"); /* */ $s = 8; case 8: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
+		_r$6 = _r$5.AddEventListener("click", true, (function $b(e) {
+			var e, $s, $r;
+			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; e = $f.e; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+			$r = setDivDisplay("#actionbar", "none"); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			currentPuzzle.moves = 0;
+			currentPuzzle.showGrid = true;
+			currentPuzzle.completed = false;
+			currentPuzzle.interactive = false;
+			shuffleRounds = defaultShuffleRounds;
+			$r = redraw(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$s = -1; return;
+			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.e = e; $f.$s = $s; $f.$r = $r; return $f;
+		})); /* */ $s = 9; case 9: if($c) { $c = false; _r$6 = _r$6.$blk(); } if (_r$6 && _r$6.$blk !== undefined) { break s; }
+		_r$6;
+		_r$7 = qs("#random"); /* */ $s = 10; case 10: if($c) { $c = false; _r$7 = _r$7.$blk(); } if (_r$7 && _r$7.$blk !== undefined) { break s; }
+		_r$8 = _r$7.AddEventListener("click", true, (function $b(e) {
+			var e, $s, $r;
+			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; e = $f.e; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+			$r = setDivDisplay("#actionbar", "none"); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$r = pickRandomPuzzle(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$s = -1; return;
+			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.e = e; $f.$s = $s; $f.$r = $r; return $f;
+		})); /* */ $s = 11; case 11: if($c) { $c = false; _r$8 = _r$8.$blk(); } if (_r$8 && _r$8.$blk !== undefined) { break s; }
+		_r$8;
+		if ((canvas.Width()) / devicePixelRatio() <= maxFullscreenWidth) {
+			marginPercent = 0.05;
+		}
+		$r = pickRandomPuzzle(); /* */ $s = 12; case 12: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$s = -1; return;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: main }; } $f._i = _i; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f._r$8 = _r$8; $f._r$9 = _r$9; $f._ref = _ref; $f.axis = axis; $f.images = images; $f.img = img; $f.min = min; $f.path = path; $f.size = size; $f.window = window; $f.x = x; $f.x$1 = x$1; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: main }; } $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f._r$8 = _r$8; $f.window = window; $f.$s = $s; $f.$r = $r; return $f;
 	};
+	pickRandomPuzzle = function() {
+		var _i, _r$1, _r$2, _r$3, _r$4, _r$5, _r$6, _ref, _tmp, _tmp$1, _tmp$2, _tmp$3, axis, h, img, margin, maxAxis, maxSide, maxSize, min, minSide, minSize, path, ratio, size, w, x, x$1, x$2, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _i = $f._i; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _ref = $f._ref; _tmp = $f._tmp; _tmp$1 = $f._tmp$1; _tmp$2 = $f._tmp$2; _tmp$3 = $f._tmp$3; axis = $f.axis; h = $f.h; img = $f.img; margin = $f.margin; maxAxis = $f.maxAxis; maxSide = $f.maxSide; maxSize = $f.maxSize; min = $f.min; minSide = $f.minSide; minSize = $f.minSize; path = $f.path; ratio = $f.ratio; size = $f.size; w = $f.w; x = $f.x; x$1 = $f.x$1; x$2 = $f.x$2; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		size = [size];
+		_tmp = (canvas.Width());
+		_tmp$1 = (canvas.Height());
+		w = _tmp;
+		h = _tmp$1;
+		margin = math.Min(marginPercent * w, marginPercent * h);
+		_tmp$2 = w - 2 * margin;
+		_tmp$3 = h - 2 * margin;
+		w = _tmp$2;
+		h = _tmp$3;
+		ratio = math.Max(math.Min(w / h, maxInnerAspect), 1 / maxInnerAspect);
+		w = ratio * h;
+		_r$2 = rand.Int(); /* */ $s = 1; case 1: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+		img = $clone((x = (_r$1 = _r$2 % images.$length, _r$1 === _r$1 ? _r$1 : $throwRuntimeError("integer divide by zero")), ((x < 0 || x >= images.$length) ? ($throwRuntimeError("index out of range"), undefined) : images.$array[images.$offset + x])), image);
+		_r$3 = fmt.Sprintf(img.path, new sliceType$4([new $Int(((w >> 0))), new $Int(((h >> 0)))])); /* */ $s = 2; case 2: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
+		path = _r$3;
+		minSize = new sliceType$2([1, 1]);
+		maxSize = new sliceType$2([1, 1]);
+		minSide = math.Min(w, h);
+		maxSide = math.Max(w, h);
+		maxAxis = 0;
+		if (w < h) {
+			maxAxis = 1;
+		}
+		(x$1 = 1 - maxAxis >> 0, ((x$1 < 0 || x$1 >= minSize.$length) ? ($throwRuntimeError("index out of range"), undefined) : minSize.$array[minSize.$offset + x$1] = img.min));
+		((maxAxis < 0 || maxAxis >= minSize.$length) ? ($throwRuntimeError("index out of range"), undefined) : minSize.$array[minSize.$offset + maxAxis] = ((math.Floor(maxSide / (minSide / (img.min))) >> 0)));
+		(x$2 = 1 - maxAxis >> 0, ((x$2 < 0 || x$2 >= maxSize.$length) ? ($throwRuntimeError("index out of range"), undefined) : maxSize.$array[maxSize.$offset + x$2] = ((math.Ceil(minSide / (maxSide / (img.max))) >> 0))));
+		((maxAxis < 0 || maxAxis >= maxSize.$length) ? ($throwRuntimeError("index out of range"), undefined) : maxSize.$array[maxSize.$offset + maxAxis] = img.max);
+		console.log((0 >= minSize.$length ? ($throwRuntimeError("index out of range"), undefined) : minSize.$array[minSize.$offset + 0]), (1 >= minSize.$length ? ($throwRuntimeError("index out of range"), undefined) : minSize.$array[minSize.$offset + 1]), (0 >= maxSize.$length ? ($throwRuntimeError("index out of range"), undefined) : maxSize.$array[maxSize.$offset + 0]), (1 >= maxSize.$length ? ($throwRuntimeError("index out of range"), undefined) : maxSize.$array[maxSize.$offset + 1]));
+		size[0] = $makeSlice(sliceType$2, minSize.$length);
+		_ref = minSize;
+		_i = 0;
+		/* while (true) { */ case 3:
+			/* if (!(_i < _ref.$length)) { break; } */ if(!(_i < _ref.$length)) { $s = 4; continue; }
+			axis = _i;
+			min = ((_i < 0 || _i >= _ref.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref.$array[_ref.$offset + _i]);
+			_r$5 = rand.Int(); /* */ $s = 5; case 5: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
+			((axis < 0 || axis >= size[0].$length) ? ($throwRuntimeError("index out of range"), undefined) : size[0].$array[size[0].$offset + axis] = (min + (_r$4 = _r$5 % (((((axis < 0 || axis >= maxSize.$length) ? ($throwRuntimeError("index out of range"), undefined) : maxSize.$array[maxSize.$offset + axis]) - min >> 0) + 1 >> 0)), _r$4 === _r$4 ? _r$4 : $throwRuntimeError("integer divide by zero")) >> 0));
+			_i++;
+		/* } */ $s = 3; continue; case 4:
+		_r$6 = fmt.Sprintf("?time=%v", new sliceType$4([$clone(time.Now(), time.Time).Unix()])); /* */ $s = 6; case 6: if($c) { $c = false; _r$6 = _r$6.$blk(); } if (_r$6 && _r$6.$blk !== undefined) { break s; }
+		path = path + (_r$6);
+		$r = loadImage(path, (function(size) { return function $b(image$1) {
+			var _r$7, image$1, $s, $r;
+			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r$7 = $f._r$7; image$1 = $f.image$1; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+			_r$7 = NewPuzzle(image$1, size[0]); /* */ $s = 1; case 1: if($c) { $c = false; _r$7 = _r$7.$blk(); } if (_r$7 && _r$7.$blk !== undefined) { break s; }
+			currentPuzzle = _r$7;
+			shuffleRounds = defaultShuffleRounds;
+			$r = redraw(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$s = -1; return;
+			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f._r$7 = _r$7; $f.image$1 = image$1; $f.$s = $s; $f.$r = $r; return $f;
+		}; })(size)); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: pickRandomPuzzle }; } $f._i = _i; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._ref = _ref; $f._tmp = _tmp; $f._tmp$1 = _tmp$1; $f._tmp$2 = _tmp$2; $f._tmp$3 = _tmp$3; $f.axis = axis; $f.h = h; $f.img = img; $f.margin = margin; $f.maxAxis = maxAxis; $f.maxSide = maxSide; $f.maxSize = maxSize; $f.min = min; $f.minSide = minSide; $f.minSize = minSize; $f.path = path; $f.ratio = ratio; $f.size = size; $f.w = w; $f.x = x; $f.x$1 = x$1; $f.x$2 = x$2; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	shufflePuzzle = function(pz) {
+		var _r$1, _r$2, _r$3, _r$4, _selection, _tmp, _tmp$1, axis, i, interval, l, n, pz, steps, x, x$1, x$2, x$3, x$4, x$5, x$6, x$7, x$8, x$9, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _selection = $f._selection; _tmp = $f._tmp; _tmp$1 = $f._tmp$1; axis = $f.axis; i = $f.i; interval = $f.interval; l = $f.l; n = $f.n; pz = $f.pz; steps = $f.steps; x = $f.x; x$1 = $f.x$1; x$2 = $f.x$2; x$3 = $f.x$3; x$4 = $f.x$4; x$5 = $f.x$5; x$6 = $f.x$6; x$7 = $f.x$7; x$8 = $f.x$8; x$9 = $f.x$9; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		interval = imax(0, (((x = (x$1 = $clone(time.Now(), time.Time).Sub($clone(shuffleStart, time.Time)), new time.Duration(shuffleTime.$high - x$1.$high, shuffleTime.$low - x$1.$low)), x.$low + ((x.$high >> 31) * 4294967296)) >> 0)));
+		_r$1 = $select([[time.After((new time.Duration(0, interval)))]]); /* */ $s = 1; case 1: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		_selection = _r$1;
+		/* */ if (_selection[0] === 0) { $s = 2; continue; }
+		/* */ $s = 3; continue;
+		/* if (_selection[0] === 0) { */ case 2:
+			axis = (_r$2 = shuffleRounds % 2, _r$2 === _r$2 ? _r$2 : $throwRuntimeError("integer divide by zero"));
+			_tmp = (x$2 = pz.size, x$3 = 1 - axis >> 0, ((x$3 < 0 || x$3 >= x$2.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$2.$array[x$2.$offset + x$3]));
+			_tmp$1 = (x$4 = pz.size, ((axis < 0 || axis >= x$4.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$4.$array[x$4.$offset + axis]));
+			n = _tmp;
+			l = _tmp$1;
+			i = 0;
+			/* while (true) { */ case 4:
+				/* if (!(i < n)) { break; } */ if(!(i < n)) { $s = 5; continue; }
+				_r$4 = rand.Int(); /* */ $s = 6; case 6: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
+				steps = (_r$3 = _r$4 % (($imul(2, l))), _r$3 === _r$3 ? _r$3 : $throwRuntimeError("integer divide by zero")) + l >> 0;
+				pz.Rotate(axis, i, steps);
+				(x$6 = (x$7 = pz.offsets, ((axis < 0 || axis >= x$7.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$7.$array[x$7.$offset + axis])), ((i < 0 || i >= x$6.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$6.$array[x$6.$offset + i] = -(steps) * (x$5 = pz.dstTile, ((axis < 0 || axis >= x$5.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$5.$array[x$5.$offset + axis]))));
+				(x$8 = (x$9 = pz.animate, ((axis < 0 || axis >= x$9.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$9.$array[x$9.$offset + axis])), ((i < 0 || i >= x$8.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$8.$array[x$8.$offset + i] = true));
+				i = i + (1) >> 0;
+			/* } */ $s = 4; continue; case 5:
+			time.Time.copy(shuffleStart, time.Now());
+			shufflePending = false;
+			shuffleRounds = shuffleRounds - (1) >> 0;
+			$r = playSound("wheel"); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$r = redraw(); /* */ $s = 8; case 8: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* } */ case 3:
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: shufflePuzzle }; } $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._selection = _selection; $f._tmp = _tmp; $f._tmp$1 = _tmp$1; $f.axis = axis; $f.i = i; $f.interval = interval; $f.l = l; $f.n = n; $f.pz = pz; $f.steps = steps; $f.x = x; $f.x$1 = x$1; $f.x$2 = x$2; $f.x$3 = x$3; $f.x$4 = x$4; $f.x$5 = x$5; $f.x$6 = x$6; $f.x$7 = x$7; $f.x$8 = x$8; $f.x$9 = x$9; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	completePuzzle = function(pz) {
+		var _r$1, _r$2, minutes, pz, unit, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r$1 = $f._r$1; _r$2 = $f._r$2; minutes = $f.minutes; pz = $f.pz; unit = $f.unit; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		pz.showGrid = false;
+		pz.completed = true;
+		pz.interactive = false;
+		$r = playSound("completed"); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		minutes = ((math.Ceil($clone(time.Now(), time.Time).Sub($clone(startTime, time.Time)).Minutes()) >> 0));
+		unit = "minutes";
+		if (minutes === 1) {
+			unit = "minute";
+		}
+		_r$1 = qs("#time"); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		_r$2 = fmt.Sprintf("Completed in %v %v", new sliceType$4([new $Int(minutes), new $String(unit)])); /* */ $s = 3; case 3: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+		$r = _r$1.SetInnerHTML(_r$2); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = setDivDisplay("#actionbar", "block"); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: completePuzzle }; } $f._r$1 = _r$1; $f._r$2 = _r$2; $f.minutes = minutes; $f.pz = pz; $f.unit = unit; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	loadImage = function(src, callback) {
+		var _r$1, _r$2, _r$3, callback, doc, img, src, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; callback = $f.callback; doc = $f.doc; img = $f.img; src = $f.src; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		callback = [callback];
+		img = [img];
+		_r$1 = dom.GetWindow().Document(); /* */ $s = 1; case 1: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		doc = _r$1;
+		_r$2 = doc.CreateElement("img"); /* */ $s = 2; case 2: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+		img[0] = $assertType(_r$2, ptrType$6);
+		_r$3 = img[0].BasicHTMLElement.BasicElement.BasicNode.AddEventListener("load", false, (function(callback, img) { return function $b(e) {
+			var e, $s, $r;
+			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; e = $f.e; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+			$r = callback[0](img[0]); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$s = -1; return;
+			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.e = e; $f.$s = $s; $f.$r = $r; return $f;
+		}; })(callback, img)); /* */ $s = 3; case 3: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
+		_r$3;
+		$r = img[0].SetSrc(src); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: loadImage }; } $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f.callback = callback; $f.doc = doc; $f.img = img; $f.src = src; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	setDivDisplay = function(selector, value) {
+		var _r$1, div, selector, value, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r$1 = $f._r$1; div = $f.div; selector = $f.selector; value = $f.value; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		_r$1 = qs(selector); /* */ $s = 1; case 1: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		div = $assertType(_r$1, ptrType$7);
+		$r = div.BasicHTMLElement.Style().SetProperty("display", value, ""); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: setDivDisplay }; } $f._r$1 = _r$1; $f.div = div; $f.selector = selector; $f.value = value; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	NewPuzzle = function(image$1, size) {
+		var _i, _ref, animate, axis, image$1, length, n, offsets, puzzle, size, x, x$1, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _i = $f._i; _ref = $f._ref; animate = $f.animate; axis = $f.axis; image$1 = $f.image$1; length = $f.length; n = $f.n; offsets = $f.offsets; puzzle = $f.puzzle; size = $f.size; x = $f.x; x$1 = $f.x$1; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		length = 1;
+		offsets = $makeSlice(sliceType$5, size.$length);
+		animate = $makeSlice(sliceType$7, size.$length);
+		_ref = size;
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.$length)) { break; }
+			axis = _i;
+			n = ((_i < 0 || _i >= _ref.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref.$array[_ref.$offset + _i]);
+			length = $imul(length, (n));
+			(x = 1 - axis >> 0, ((x < 0 || x >= offsets.$length) ? ($throwRuntimeError("index out of range"), undefined) : offsets.$array[offsets.$offset + x] = $makeSlice(sliceType$3, n)));
+			(x$1 = 1 - axis >> 0, ((x$1 < 0 || x$1 >= animate.$length) ? ($throwRuntimeError("index out of range"), undefined) : animate.$array[animate.$offset + x$1] = $makeSlice(sliceType$6, n)));
+			_i++;
+		}
+		setFloats2(offsets, 0);
+		setBools2(animate, false);
+		puzzle = new Puzzle.ptr(image$1, size, offsets, animate, identityMap(0, length), 0, true, false, false, "", sliceType$3.nil, sliceType$3.nil, sliceType$3.nil);
+		$r = puzzle.recompute(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$s = -1; return puzzle;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: NewPuzzle }; } $f._i = _i; $f._ref = _ref; $f.animate = animate; $f.axis = axis; $f.image$1 = image$1; $f.length = length; $f.n = n; $f.offsets = offsets; $f.puzzle = puzzle; $f.size = size; $f.x = x; $f.x$1 = x$1; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$pkg.NewPuzzle = NewPuzzle;
+	Puzzle.ptr.prototype.RotateRow = function(i, steps) {
+		var cpy, i, j, pz, steps, w, x, x$1, x$2, x$3;
+		pz = this;
+		pz.moves = pz.moves + (1) >> 0;
+		w = (x = pz.size, (0 >= x.$length ? ($throwRuntimeError("index out of range"), undefined) : x.$array[x.$offset + 0]));
+		cpy = $appendSlice(new sliceType$2([]), pz.state);
+		j = 0;
+		while (true) {
+			if (!(j < w)) { break; }
+			(x$2 = pz.state, x$3 = ($imul(i, w)) + j >> 0, ((x$3 < 0 || x$3 >= x$2.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$2.$array[x$2.$offset + x$3] = (x$1 = ($imul(i, w)) + imod(j - steps >> 0, w) >> 0, ((x$1 < 0 || x$1 >= cpy.$length) ? ($throwRuntimeError("index out of range"), undefined) : cpy.$array[cpy.$offset + x$1]))));
+			j = j + (1) >> 0;
+		}
+	};
+	Puzzle.prototype.RotateRow = function(i, steps) { return this.$val.RotateRow(i, steps); };
+	Puzzle.ptr.prototype.RotateCol = function(i, steps) {
+		var _tmp, _tmp$1, cpy, h, i, j, pz, steps, w, x, x$1, x$2, x$3, x$4;
+		pz = this;
+		pz.moves = pz.moves + (1) >> 0;
+		_tmp = (x = pz.size, (0 >= x.$length ? ($throwRuntimeError("index out of range"), undefined) : x.$array[x.$offset + 0]));
+		_tmp$1 = (x$1 = pz.size, (1 >= x$1.$length ? ($throwRuntimeError("index out of range"), undefined) : x$1.$array[x$1.$offset + 1]));
+		w = _tmp;
+		h = _tmp$1;
+		cpy = $appendSlice(new sliceType$2([]), pz.state);
+		j = 0;
+		while (true) {
+			if (!(j < h)) { break; }
+			(x$3 = pz.state, x$4 = i + ($imul(j, w)) >> 0, ((x$4 < 0 || x$4 >= x$3.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$3.$array[x$3.$offset + x$4] = (x$2 = i + ($imul(imod(j - steps >> 0, h), w)) >> 0, ((x$2 < 0 || x$2 >= cpy.$length) ? ($throwRuntimeError("index out of range"), undefined) : cpy.$array[cpy.$offset + x$2]))));
+			j = j + (1) >> 0;
+		}
+	};
+	Puzzle.prototype.RotateCol = function(i, steps) { return this.$val.RotateCol(i, steps); };
+	Puzzle.ptr.prototype.Rotate = function(axis, i, steps) {
+		var axis, i, pz, steps;
+		pz = this;
+		if (axis === 0) {
+			pz.RotateRow(i, steps);
+		} else if (axis === 1) {
+			pz.RotateCol(i, steps);
+		}
+	};
+	Puzzle.prototype.Rotate = function(axis, i, steps) { return this.$val.Rotate(axis, i, steps); };
+	Puzzle.ptr.prototype.computePosition = function(coord) {
+		var _i, _ref, _tmp, _tmp$1, axis, coord, origin, pos, pz, tile, v, x, x$1, x$2;
+		pz = this;
+		pos = new sliceType$2([0, 0]);
+		_ref = coord;
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.$length)) { break; }
+			axis = _i;
+			v = ((_i < 0 || _i >= _ref.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref.$array[_ref.$offset + _i]);
+			_tmp = (x = pz.dstOrigin, ((axis < 0 || axis >= x.$length) ? ($throwRuntimeError("index out of range"), undefined) : x.$array[x.$offset + axis]));
+			_tmp$1 = (x$1 = pz.dstTile, ((axis < 0 || axis >= x$1.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$1.$array[x$1.$offset + axis]));
+			origin = _tmp;
+			tile = _tmp$1;
+			((axis < 0 || axis >= pos.$length) ? ($throwRuntimeError("index out of range"), undefined) : pos.$array[pos.$offset + axis] = iclamp(((math.Floor((v - origin) / tile) >> 0)), 0, (x$2 = pz.size, ((axis < 0 || axis >= x$2.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$2.$array[x$2.$offset + axis])) - 1 >> 0));
+			_i++;
+		}
+		return pos;
+	};
+	Puzzle.prototype.computePosition = function(coord) { return this.$val.computePosition(coord); };
+	Puzzle.ptr.prototype.computePositionEdge = function(coord) {
+		var _i, _ref, _tmp, _tmp$1, _tmp$2, _tmp$3, ax, belowDiag, belowInvDiag, coord, delta, dx, dy, edge, i, pos, pz, ratio, x, x$1, x$2, x$3;
+		pz = this;
+		pos = pz.computePosition(coord);
+		delta = new sliceType$3([0, 0]);
+		_ref = pos;
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.$length)) { break; }
+			ax = _i;
+			i = ((_i < 0 || _i >= _ref.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref.$array[_ref.$offset + _i]);
+			((ax < 0 || ax >= delta.$length) ? ($throwRuntimeError("index out of range"), undefined) : delta.$array[delta.$offset + ax] = ((ax < 0 || ax >= coord.$length) ? ($throwRuntimeError("index out of range"), undefined) : coord.$array[coord.$offset + ax]) - (x = pz.dstOrigin, ((ax < 0 || ax >= x.$length) ? ($throwRuntimeError("index out of range"), undefined) : x.$array[x.$offset + ax])) - ((i) + 0.5) * (x$1 = pz.dstTile, ((ax < 0 || ax >= x$1.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$1.$array[x$1.$offset + ax])));
+			_i++;
+		}
+		edge = 0;
+		_tmp = (0 >= delta.$length ? ($throwRuntimeError("index out of range"), undefined) : delta.$array[delta.$offset + 0]);
+		_tmp$1 = (1 >= delta.$length ? ($throwRuntimeError("index out of range"), undefined) : delta.$array[delta.$offset + 1]);
+		dx = _tmp;
+		dy = _tmp$1;
+		ratio = (x$2 = pz.dstTile, (1 >= x$2.$length ? ($throwRuntimeError("index out of range"), undefined) : x$2.$array[x$2.$offset + 1])) / (x$3 = pz.dstTile, (0 >= x$3.$length ? ($throwRuntimeError("index out of range"), undefined) : x$3.$array[x$3.$offset + 0]));
+		_tmp$2 = dy < ratio * dx;
+		_tmp$3 = dy < -ratio * dx;
+		belowDiag = _tmp$2;
+		belowInvDiag = _tmp$3;
+		if (belowDiag && belowInvDiag) {
+			edge = 2;
+		} else if (belowDiag && !belowInvDiag) {
+			edge = 1;
+		} else if (!belowDiag && belowInvDiag) {
+			edge = 3;
+		}
+		return [pos, edge];
+	};
+	Puzzle.prototype.computePositionEdge = function(coord) { return this.$val.computePositionEdge(coord); };
+	Puzzle.ptr.prototype.recompute = function() {
+		var _r$1, _r$2, _tmp, _tmp$1, _tmp$2, _tmp$3, _tmp$4, _tmp$5, _tmp$6, _tmp$7, cols, ctx$1, dh, dth, dtw, dw, dx0, dy0, h, margin, pz, rows, scale, sh, sw, w, x, x$1, x$2, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r$1 = $f._r$1; _r$2 = $f._r$2; _tmp = $f._tmp; _tmp$1 = $f._tmp$1; _tmp$2 = $f._tmp$2; _tmp$3 = $f._tmp$3; _tmp$4 = $f._tmp$4; _tmp$5 = $f._tmp$5; _tmp$6 = $f._tmp$6; _tmp$7 = $f._tmp$7; cols = $f.cols; ctx$1 = $f.ctx$1; dh = $f.dh; dth = $f.dth; dtw = $f.dtw; dw = $f.dw; dx0 = $f.dx0; dy0 = $f.dy0; h = $f.h; margin = $f.margin; pz = $f.pz; rows = $f.rows; scale = $f.scale; sh = $f.sh; sw = $f.sw; w = $f.w; x = $f.x; x$1 = $f.x$1; x$2 = $f.x$2; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		pz = this;
+		_tmp = (x = pz.size, (0 >= x.$length ? ($throwRuntimeError("index out of range"), undefined) : x.$array[x.$offset + 0]));
+		_tmp$1 = (x$1 = pz.size, (1 >= x$1.$length ? ($throwRuntimeError("index out of range"), undefined) : x$1.$array[x$1.$offset + 1]));
+		cols = _tmp;
+		rows = _tmp$1;
+		_tmp$2 = (canvas.Width());
+		_tmp$3 = (canvas.Height());
+		w = _tmp$2;
+		h = _tmp$3;
+		_tmp$4 = (pz.image.Width());
+		_tmp$5 = (pz.image.Height());
+		sw = _tmp$4;
+		sh = _tmp$5;
+		margin = math.Min(marginPercent * w, marginPercent * h);
+		scale = math.Min((w - 2 * margin) / sw, (h - 2 * margin) / sh);
+		_tmp$6 = math.Round((w - sw * scale) / 2);
+		_tmp$7 = math.Round((h - sh * scale) / 2);
+		dx0 = _tmp$6;
+		dy0 = _tmp$7;
+		dtw = math.Round(sw * scale / (cols));
+		dth = math.Round(sh * scale / (rows));
+		dw = dtw * (cols);
+		dh = dth * (rows);
+		pz.dstOrigin = new sliceType$3([dx0, dy0]);
+		pz.dstTile = new sliceType$3([dtw, dth]);
+		pz.dstSize = new sliceType$3([dw, dh]);
+		$r = offscreen.SetWidth(((dw >> 0))); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = offscreen.SetHeight(((dh >> 0))); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		_r$1 = offscreen.GetContext2d(); /* */ $s = 3; case 3: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		ctx$1 = _r$1;
+		_r$2 = $clone(ctx$1.Value, js.Value).Call("drawImage", new sliceType$4([(x$2 = pz.image.BasicHTMLElement.BasicElement.BasicNode.Underlying(), new x$2.constructor.elem(x$2)), new $Int(0), new $Int(0), new $Float64(sw), new $Float64(sh), new $Int(0), new $Int(0), new $Float64(dw), new $Float64(dh)])); /* */ $s = 4; case 4: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+		_r$2;
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Puzzle.ptr.prototype.recompute }; } $f._r$1 = _r$1; $f._r$2 = _r$2; $f._tmp = _tmp; $f._tmp$1 = _tmp$1; $f._tmp$2 = _tmp$2; $f._tmp$3 = _tmp$3; $f._tmp$4 = _tmp$4; $f._tmp$5 = _tmp$5; $f._tmp$6 = _tmp$6; $f._tmp$7 = _tmp$7; $f.cols = cols; $f.ctx$1 = ctx$1; $f.dh = dh; $f.dth = dth; $f.dtw = dtw; $f.dw = dw; $f.dx0 = dx0; $f.dy0 = dy0; $f.h = h; $f.margin = margin; $f.pz = pz; $f.rows = rows; $f.scale = scale; $f.sh = sh; $f.sw = sw; $f.w = w; $f.x = x; $f.x$1 = x$1; $f.x$2 = x$2; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	Puzzle.prototype.recompute = function() { return this.$val.recompute(); };
+	Puzzle.ptr.prototype.animateOffsets = function(dt) {
+		var _i, _i$1, _ref, _ref$1, _tmp, _tmp$1, axis, dt, i, params, pz, redraw$1, scale, slope, t, x, x$1, y;
+		pz = this;
+		redraw$1 = false;
+		_tmp = animateScale;
+		_tmp$1 = animateSlope;
+		scale = _tmp;
+		slope = _tmp$1;
+		_ref = pz.offsets;
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.$length)) { break; }
+			axis = _i;
+			params = ((_i < 0 || _i >= _ref.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref.$array[_ref.$offset + _i]);
+			_ref$1 = params;
+			_i$1 = 0;
+			while (true) {
+				if (!(_i$1 < _ref$1.$length)) { break; }
+				i = _i$1;
+				if ((x = (x$1 = pz.animate, ((axis < 0 || axis >= x$1.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$1.$array[x$1.$offset + axis])), ((i < 0 || i >= x.$length) ? ($throwRuntimeError("index out of range"), undefined) : x.$array[x.$offset + i])) && !((((i < 0 || i >= params.$length) ? ($throwRuntimeError("index out of range"), undefined) : params.$array[params.$offset + i]) === 0))) {
+					redraw$1 = true;
+					y = ((i < 0 || i >= params.$length) ? ($throwRuntimeError("index out of range"), undefined) : params.$array[params.$offset + i]);
+					t = math.Pow(math.Abs(y / scale), 1 / slope);
+					((i < 0 || i >= params.$length) ? ($throwRuntimeError("index out of range"), undefined) : params.$array[params.$offset + i] = math.Copysign(scale * math.Pow(math.Max(0, t - dt), slope), y));
+				}
+				_i$1++;
+			}
+			_i++;
+		}
+		return redraw$1;
+	};
+	Puzzle.prototype.animateOffsets = function(dt) { return this.$val.animateOffsets(dt); };
 	resize = function() {
 		var _arg, _arg$1, _r$1, _r$2, _r$3, _r$4, height, pixelRatio, rect, style, width, $s, $r;
 		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _arg = $f._arg; _arg$1 = $f._arg$1; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; height = $f.height; pixelRatio = $f.pixelRatio; rect = $f.rect; style = $f.style; width = $f.width; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -32553,10 +33025,10 @@ $packages["."] = (function() {
 	redraw = function() {
 		var _r$1, $s, $r;
 		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r$1 = $f._r$1; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		/* */ if (!lock) { $s = 1; continue; }
+		/* */ if (!redrawPending) { $s = 1; continue; }
 		/* */ $s = 2; continue;
-		/* if (!lock) { */ case 1:
-			lock = true;
+		/* if (!redrawPending) { */ case 1:
+			redrawPending = true;
 			_r$1 = dom.GetWindow().RequestAnimationFrame(_redraw); /* */ $s = 3; case 3: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
 			_r$1;
 		/* } */ case 2:
@@ -32564,9 +33036,9 @@ $packages["."] = (function() {
 		/* */ } return; } if ($f === undefined) { $f = { $blk: redraw }; } $f._r$1 = _r$1; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	_redraw = function(t) {
-		var _r$1, _r$2, _r$3, _tmp, _tmp$1, almostReady, axis, currTime, dt, i, l, maxOffset, n, pz, ready, steps, t, x, x$1, x$2, x$3, x$4, x$5, x$6, x$7, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _tmp = $f._tmp; _tmp$1 = $f._tmp$1; almostReady = $f.almostReady; axis = $f.axis; currTime = $f.currTime; dt = $f.dt; i = $f.i; l = $f.l; maxOffset = $f.maxOffset; n = $f.n; pz = $f.pz; ready = $f.ready; steps = $f.steps; t = $f.t; x = $f.x; x$1 = $f.x$1; x$2 = $f.x$2; x$3 = $f.x$3; x$4 = $f.x$4; x$5 = $f.x$5; x$6 = $f.x$6; x$7 = $f.x$7; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		lock = false;
+		var _i, _ref, axis, currTime, dt, maxOffset, pz, ready, readyForSound, t, v, x, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _i = $f._i; _ref = $f._ref; axis = $f.axis; currTime = $f.currTime; dt = $f.dt; maxOffset = $f.maxOffset; pz = $f.pz; ready = $f.ready; readyForSound = $f.readyForSound; t = $f.t; v = $f.v; x = $f.x; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		redrawPending = false;
 		pz = currentPuzzle;
 		if (pz === ptrType$2.nil) {
 			$s = -1; return;
@@ -32577,77 +33049,53 @@ $packages["."] = (function() {
 			dt = ($flatten64($clone(currTime, time.Time).Sub($clone(prevTime, time.Time)).Nanoseconds())) / 1e+09;
 		}
 		time.Time.copy(prevTime, currTime);
-		maxOffset = absMax2(pz.offsets);
-		almostReady = maxOffset < maxAnimationLeft;
-		ready = maxOffset < 1;
-		/* */ if (ready && shuffleRounds > 0) { $s = 1; continue; }
+		ready = true;
+		readyForSound = false;
+		_ref = pz.offsets;
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.$length)) { break; }
+			axis = _i;
+			v = ((_i < 0 || _i >= _ref.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref.$array[_ref.$offset + _i]);
+			maxOffset = absMax(v);
+			if (maxOffset >= 1) {
+				ready = false;
+			}
+			if (0 < maxOffset && maxOffset < playSoundAt * (x = pz.dstTile, ((axis < 0 || axis >= x.$length) ? ($throwRuntimeError("index out of range"), undefined) : x.$array[x.$offset + axis]))) {
+				readyForSound = true;
+			}
+			_i++;
+		}
+		/* */ if (ready && shuffleRounds > 0 && !shufflePending) { $s = 1; continue; }
 		/* */ $s = 2; continue;
-		/* if (ready && shuffleRounds > 0) { */ case 1:
-			setFloats2(pz.offsets, 0);
-			shuffleRounds = shuffleRounds - (1) >> 0;
-			axis = (_r$1 = shuffleRounds % 2, _r$1 === _r$1 ? _r$1 : $throwRuntimeError("integer divide by zero"));
-			_tmp = (x = pz.size, x$1 = 1 - axis >> 0, ((x$1 < 0 || x$1 >= x.$length) ? ($throwRuntimeError("index out of range"), undefined) : x.$array[x.$offset + x$1]));
-			_tmp$1 = (x$2 = pz.size, ((axis < 0 || axis >= x$2.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$2.$array[x$2.$offset + axis]));
-			n = _tmp;
-			l = _tmp$1;
-			i = 0;
-			/* while (true) { */ case 3:
-				/* if (!(i < n)) { break; } */ if(!(i < n)) { $s = 4; continue; }
-				_r$3 = rand.Int(); /* */ $s = 5; case 5: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
-				steps = (_r$2 = _r$3 % (($imul(2, l))), _r$2 === _r$2 ? _r$2 : $throwRuntimeError("integer divide by zero")) + l >> 0;
-				pz.Rotate(axis, i, steps);
-				(x$4 = (x$5 = pz.offsets, ((axis < 0 || axis >= x$5.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$5.$array[x$5.$offset + axis])), ((i < 0 || i >= x$4.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$4.$array[x$4.$offset + i] = -(steps) * (x$3 = pz.dstTile, ((axis < 0 || axis >= x$3.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$3.$array[x$3.$offset + axis]))));
-				(x$6 = (x$7 = pz.animate, ((axis < 0 || axis >= x$7.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$7.$array[x$7.$offset + axis])), ((i < 0 || i >= x$6.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$6.$array[x$6.$offset + i] = true));
-				i = i + (1) >> 0;
-			/* } */ $s = 3; continue; case 4:
-			$r = playSound("wheel"); /* */ $s = 6; case 6: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* if (ready && shuffleRounds > 0 && !shufflePending) { */ case 1:
+			shufflePending = true;
+			$go(shufflePuzzle, [pz]);
 		/* } */ case 2:
 		if (ready && !pz.completed && (shuffleRounds === 0) && pz.moves > 0) {
+			time.Time.copy(startTime, time.Now());
 			pz.interactive = true;
 		}
-		/* */ if (almostReady && pz.pendingSound.length > 0) { $s = 7; continue; }
-		/* */ $s = 8; continue;
-		/* if (almostReady && pz.pendingSound.length > 0) { */ case 7:
-			$r = playSound(pz.pendingSound); /* */ $s = 9; case 9: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* */ if (readyForSound && pz.pendingSound.length > 0) { $s = 3; continue; }
+		/* */ $s = 4; continue;
+		/* if (readyForSound && pz.pendingSound.length > 0) { */ case 3:
+			$r = playSound(pz.pendingSound); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 			pz.pendingSound = "";
-		/* } */ case 8:
-		/* */ if (!pz.completed && pz.interactive && isIdentity(pz.state) && ready) { $s = 10; continue; }
+		/* } */ case 4:
+		/* */ if (!pz.completed && pz.interactive && isIdentity(pz.state) && ready) { $s = 6; continue; }
+		/* */ $s = 7; continue;
+		/* if (!pz.completed && pz.interactive && isIdentity(pz.state) && ready) { */ case 6:
+			$r = completePuzzle(pz); /* */ $s = 8; case 8: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* } */ case 7:
+		$r = draw(pz); /* */ $s = 9; case 9: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		instantRedraw = pz.animateOffsets(dt);
+		/* */ if (instantRedraw) { $s = 10; continue; }
 		/* */ $s = 11; continue;
-		/* if (!pz.completed && pz.interactive && isIdentity(pz.state) && ready) { */ case 10:
-			pz.completed = true;
-			pz.showGrid = false;
-			pz.interactive = false;
-			$r = playSound("completed"); /* */ $s = 12; case 12: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* if (instantRedraw) { */ case 10:
+			$r = redraw(); /* */ $s = 12; case 12: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		/* } */ case 11:
-		$r = draw(pz); /* */ $s = 13; case 13: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		instantRedraw = pz.Animate(dt);
-		/* */ if (instantRedraw) { $s = 14; continue; }
-		/* */ $s = 15; continue;
-		/* if (instantRedraw) { */ case 14:
-			$r = redraw(); /* */ $s = 16; case 16: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		/* } */ case 15:
 		$s = -1; return;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: _redraw }; } $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._tmp = _tmp; $f._tmp$1 = _tmp$1; $f.almostReady = almostReady; $f.axis = axis; $f.currTime = currTime; $f.dt = dt; $f.i = i; $f.l = l; $f.maxOffset = maxOffset; $f.n = n; $f.pz = pz; $f.ready = ready; $f.steps = steps; $f.t = t; $f.x = x; $f.x$1 = x$1; $f.x$2 = x$2; $f.x$3 = x$3; $f.x$4 = x$4; $f.x$5 = x$5; $f.x$6 = x$6; $f.x$7 = x$7; $f.$s = $s; $f.$r = $r; return $f;
-	};
-	loadImage = function(src, callback) {
-		var _r$1, _r$2, _r$3, callback, img, src, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; callback = $f.callback; img = $f.img; src = $f.src; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		callback = [callback];
-		img = [img];
-		_r$1 = dom.GetWindow().Document(); /* */ $s = 1; case 1: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
-		_r$2 = _r$1.CreateElement("img"); /* */ $s = 2; case 2: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
-		img[0] = $assertType(_r$2, ptrType$6);
-		_r$3 = img[0].BasicHTMLElement.BasicElement.BasicNode.AddEventListener("load", false, (function(callback, img) { return function $b(e) {
-			var e, $s, $r;
-			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; e = $f.e; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-			$r = callback[0](img[0]); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-			$s = -1; return;
-			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.e = e; $f.$s = $s; $f.$r = $r; return $f;
-		}; })(callback, img)); /* */ $s = 3; case 3: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
-		_r$3;
-		$r = img[0].SetSrc(src); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$s = -1; return;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: loadImage }; } $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f.callback = callback; $f.img = img; $f.src = src; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: _redraw }; } $f._i = _i; $f._ref = _ref; $f.axis = axis; $f.currTime = currTime; $f.dt = dt; $f.maxOffset = maxOffset; $f.pz = pz; $f.ready = ready; $f.readyForSound = readyForSound; $f.t = t; $f.v = v; $f.x = x; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	drawOffscreenImage = function(sx, sy, sw, sh, dx, dy) {
 		var _r$1, dx, dy, sh, sw, sx, sy, x, $s, $r;
@@ -32671,214 +33119,37 @@ $packages["."] = (function() {
 		/* */ } return; } if ($f === undefined) { $f = { $blk: drawFrame }; } $f.dh = dh; $f.dw = dw; $f.dx = dx; $f.dy = dy; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	playSound = function(id) {
-		var _r$1, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, audio, document, id, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _r$7 = $f._r$7; audio = $f.audio; document = $f.document; id = $f.id; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var _entry, _r$1, _r$10, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, _r$8, _r$9, _tuple, audio, document, id, ok, v, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _entry = $f._entry; _r$1 = $f._r$1; _r$10 = $f._r$10; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _r$7 = $f._r$7; _r$8 = $f._r$8; _r$9 = $f._r$9; _tuple = $f._tuple; audio = $f.audio; document = $f.document; id = $f.id; ok = $f.ok; v = $f.v; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		_r$1 = dom.GetWindow().Document(); /* */ $s = 1; case 1: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
 		document = _r$1;
-		_r$2 = document.GetElementByID(id); /* */ $s = 2; case 2: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
-		audio = _r$2;
-		_r$3 = audio.Underlying(); /* */ $s = 3; case 3: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
-		_r$4 = $clone(_r$3, js.Value).Call("pause", new sliceType$4([])); /* */ $s = 4; case 4: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
-		_r$4;
-		_r$5 = audio.Underlying(); /* */ $s = 5; case 5: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
-		$r = $clone(_r$5, js.Value).Set("currentTime", new $Int(0)); /* */ $s = 6; case 6: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		_r$6 = audio.Underlying(); /* */ $s = 7; case 7: if($c) { $c = false; _r$6 = _r$6.$blk(); } if (_r$6 && _r$6.$blk !== undefined) { break s; }
-		_r$7 = $clone(_r$6, js.Value).Call("play", new sliceType$4([])); /* */ $s = 8; case 8: if($c) { $c = false; _r$7 = _r$7.$blk(); } if (_r$7 && _r$7.$blk !== undefined) { break s; }
+		audio = $ifaceNil;
+		_tuple = (_entry = rotateAudio[$String.keyFor(id)], _entry !== undefined ? [_entry.v, true] : [sliceType$2.nil, false]);
+		v = _tuple[0];
+		ok = _tuple[1];
+		/* */ if (ok) { $s = 2; continue; }
+		/* */ $s = 3; continue;
+		/* if (ok) { */ case 2:
+			(1 >= v.$length ? ($throwRuntimeError("index out of range"), undefined) : v.$array[v.$offset + 1] = (_r$2 = (((1 >= v.$length ? ($throwRuntimeError("index out of range"), undefined) : v.$array[v.$offset + 1]) + 1 >> 0)) % (0 >= v.$length ? ($throwRuntimeError("index out of range"), undefined) : v.$array[v.$offset + 0]), _r$2 === _r$2 ? _r$2 : $throwRuntimeError("integer divide by zero")));
+			_r$3 = fmt.Sprintf("%v_%v", new sliceType$4([new $String(id), new $Int((1 >= v.$length ? ($throwRuntimeError("index out of range"), undefined) : v.$array[v.$offset + 1]))])); /* */ $s = 5; case 5: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
+			_r$4 = document.GetElementByID(_r$3); /* */ $s = 6; case 6: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
+			audio = _r$4;
+			$s = 4; continue;
+		/* } else { */ case 3:
+			_r$5 = document.GetElementByID(id); /* */ $s = 7; case 7: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
+			audio = _r$5;
+		/* } */ case 4:
+		_r$6 = audio.Underlying(); /* */ $s = 8; case 8: if($c) { $c = false; _r$6 = _r$6.$blk(); } if (_r$6 && _r$6.$blk !== undefined) { break s; }
+		_r$7 = $clone(_r$6, js.Value).Call("pause", new sliceType$4([])); /* */ $s = 9; case 9: if($c) { $c = false; _r$7 = _r$7.$blk(); } if (_r$7 && _r$7.$blk !== undefined) { break s; }
 		_r$7;
+		_r$8 = audio.Underlying(); /* */ $s = 10; case 10: if($c) { $c = false; _r$8 = _r$8.$blk(); } if (_r$8 && _r$8.$blk !== undefined) { break s; }
+		$r = $clone(_r$8, js.Value).Set("currentTime", new $Int(0)); /* */ $s = 11; case 11: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		_r$9 = audio.Underlying(); /* */ $s = 12; case 12: if($c) { $c = false; _r$9 = _r$9.$blk(); } if (_r$9 && _r$9.$blk !== undefined) { break s; }
+		_r$10 = $clone(_r$9, js.Value).Call("play", new sliceType$4([])); /* */ $s = 13; case 13: if($c) { $c = false; _r$10 = _r$10.$blk(); } if (_r$10 && _r$10.$blk !== undefined) { break s; }
+		_r$10;
 		$s = -1; return;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: playSound }; } $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f.audio = audio; $f.document = document; $f.id = id; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: playSound }; } $f._entry = _entry; $f._r$1 = _r$1; $f._r$10 = _r$10; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f._r$8 = _r$8; $f._r$9 = _r$9; $f._tuple = _tuple; $f.audio = audio; $f.document = document; $f.id = id; $f.ok = ok; $f.v = v; $f.$s = $s; $f.$r = $r; return $f;
 	};
-	NewPuzzle = function(image$1, size) {
-		var _i, _ref, animate, axis, image$1, length, n, offsets, puzzle, size, x, x$1, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _i = $f._i; _ref = $f._ref; animate = $f.animate; axis = $f.axis; image$1 = $f.image$1; length = $f.length; n = $f.n; offsets = $f.offsets; puzzle = $f.puzzle; size = $f.size; x = $f.x; x$1 = $f.x$1; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		length = 1;
-		offsets = $makeSlice(sliceType$5, size.$length);
-		animate = $makeSlice(sliceType$7, size.$length);
-		_ref = size;
-		_i = 0;
-		while (true) {
-			if (!(_i < _ref.$length)) { break; }
-			axis = _i;
-			n = ((_i < 0 || _i >= _ref.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref.$array[_ref.$offset + _i]);
-			length = $imul(length, (n));
-			(x = 1 - axis >> 0, ((x < 0 || x >= offsets.$length) ? ($throwRuntimeError("index out of range"), undefined) : offsets.$array[offsets.$offset + x] = $makeSlice(sliceType$1, n)));
-			(x$1 = 1 - axis >> 0, ((x$1 < 0 || x$1 >= animate.$length) ? ($throwRuntimeError("index out of range"), undefined) : animate.$array[animate.$offset + x$1] = $makeSlice(sliceType$6, n)));
-			_i++;
-		}
-		setFloats2(offsets, 0);
-		setBools2(animate, false);
-		puzzle = new Puzzle.ptr(image$1, size, offsets, animate, identityMap(0, length), 0, false, false, true, "", sliceType$1.nil, sliceType$1.nil, sliceType$1.nil);
-		$r = puzzle.recompute(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$s = -1; return puzzle;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: NewPuzzle }; } $f._i = _i; $f._ref = _ref; $f.animate = animate; $f.axis = axis; $f.image$1 = image$1; $f.length = length; $f.n = n; $f.offsets = offsets; $f.puzzle = puzzle; $f.size = size; $f.x = x; $f.x$1 = x$1; $f.$s = $s; $f.$r = $r; return $f;
-	};
-	$pkg.NewPuzzle = NewPuzzle;
-	Puzzle.ptr.prototype.Animate = function(dt) {
-		var _i, _i$1, _ref, _ref$1, _tmp, _tmp$1, axis, dt, i, params, pz, redraw$1, scale, slope, t, x, x$1, y;
-		pz = this;
-		redraw$1 = false;
-		_tmp = animateScale;
-		_tmp$1 = animateSlope;
-		scale = _tmp;
-		slope = _tmp$1;
-		_ref = pz.offsets;
-		_i = 0;
-		while (true) {
-			if (!(_i < _ref.$length)) { break; }
-			axis = _i;
-			params = ((_i < 0 || _i >= _ref.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref.$array[_ref.$offset + _i]);
-			_ref$1 = params;
-			_i$1 = 0;
-			while (true) {
-				if (!(_i$1 < _ref$1.$length)) { break; }
-				i = _i$1;
-				if ((x = (x$1 = pz.animate, ((axis < 0 || axis >= x$1.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$1.$array[x$1.$offset + axis])), ((i < 0 || i >= x.$length) ? ($throwRuntimeError("index out of range"), undefined) : x.$array[x.$offset + i])) && !((((i < 0 || i >= params.$length) ? ($throwRuntimeError("index out of range"), undefined) : params.$array[params.$offset + i]) === 0))) {
-					redraw$1 = true;
-					y = ((i < 0 || i >= params.$length) ? ($throwRuntimeError("index out of range"), undefined) : params.$array[params.$offset + i]);
-					t = math.Pow(math.Abs(y / scale), 1 / slope);
-					((i < 0 || i >= params.$length) ? ($throwRuntimeError("index out of range"), undefined) : params.$array[params.$offset + i] = math.Copysign(scale * math.Pow(math.Max(0, t - dt), slope), y));
-				}
-				_i$1++;
-			}
-			_i++;
-		}
-		return redraw$1;
-	};
-	Puzzle.prototype.Animate = function(dt) { return this.$val.Animate(dt); };
-	Puzzle.ptr.prototype.RotateRow = function(i, steps) {
-		var cpy, i, j, pz, steps, w, x, x$1, x$2, x$3;
-		pz = this;
-		pz.moves = pz.moves + (1) >> 0;
-		w = (x = pz.size, (0 >= x.$length ? ($throwRuntimeError("index out of range"), undefined) : x.$array[x.$offset + 0]));
-		cpy = $appendSlice(new sliceType$2([]), pz.state);
-		j = 0;
-		while (true) {
-			if (!(j < w)) { break; }
-			(x$2 = pz.state, x$3 = ($imul(i, w)) + j >> 0, ((x$3 < 0 || x$3 >= x$2.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$2.$array[x$2.$offset + x$3] = (x$1 = ($imul(i, w)) + imod(j - steps >> 0, w) >> 0, ((x$1 < 0 || x$1 >= cpy.$length) ? ($throwRuntimeError("index out of range"), undefined) : cpy.$array[cpy.$offset + x$1]))));
-			j = j + (1) >> 0;
-		}
-	};
-	Puzzle.prototype.RotateRow = function(i, steps) { return this.$val.RotateRow(i, steps); };
-	Puzzle.ptr.prototype.RotateCol = function(i, steps) {
-		var _tmp, _tmp$1, cpy, h, i, j, pz, steps, w, x, x$1, x$2, x$3, x$4;
-		pz = this;
-		pz.moves = pz.moves + (1) >> 0;
-		_tmp = (x = pz.size, (0 >= x.$length ? ($throwRuntimeError("index out of range"), undefined) : x.$array[x.$offset + 0]));
-		_tmp$1 = (x$1 = pz.size, (1 >= x$1.$length ? ($throwRuntimeError("index out of range"), undefined) : x$1.$array[x$1.$offset + 1]));
-		w = _tmp;
-		h = _tmp$1;
-		cpy = $appendSlice(new sliceType$2([]), pz.state);
-		j = 0;
-		while (true) {
-			if (!(j < h)) { break; }
-			(x$3 = pz.state, x$4 = i + ($imul(j, w)) >> 0, ((x$4 < 0 || x$4 >= x$3.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$3.$array[x$3.$offset + x$4] = (x$2 = i + ($imul(imod(j - steps >> 0, h), w)) >> 0, ((x$2 < 0 || x$2 >= cpy.$length) ? ($throwRuntimeError("index out of range"), undefined) : cpy.$array[cpy.$offset + x$2]))));
-			j = j + (1) >> 0;
-		}
-	};
-	Puzzle.prototype.RotateCol = function(i, steps) { return this.$val.RotateCol(i, steps); };
-	Puzzle.ptr.prototype.Rotate = function(axis, i, steps) {
-		var axis, i, pz, steps;
-		pz = this;
-		if (axis === 0) {
-			pz.RotateRow(i, steps);
-		} else if (axis === 1) {
-			pz.RotateCol(i, steps);
-		}
-	};
-	Puzzle.prototype.Rotate = function(axis, i, steps) { return this.$val.Rotate(axis, i, steps); };
-	Puzzle.ptr.prototype.computePosition = function(coord) {
-		var _i, _ref, _tmp, _tmp$1, axis, coord, origin, pos, pz, tile, v, x, x$1, x$2;
-		pz = this;
-		pos = new sliceType$2([0, 0]);
-		_ref = coord;
-		_i = 0;
-		while (true) {
-			if (!(_i < _ref.$length)) { break; }
-			axis = _i;
-			v = ((_i < 0 || _i >= _ref.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref.$array[_ref.$offset + _i]);
-			_tmp = (x = pz.dstOrigin, ((axis < 0 || axis >= x.$length) ? ($throwRuntimeError("index out of range"), undefined) : x.$array[x.$offset + axis]));
-			_tmp$1 = (x$1 = pz.dstTile, ((axis < 0 || axis >= x$1.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$1.$array[x$1.$offset + axis]));
-			origin = _tmp;
-			tile = _tmp$1;
-			((axis < 0 || axis >= pos.$length) ? ($throwRuntimeError("index out of range"), undefined) : pos.$array[pos.$offset + axis] = iclamp(((math.Floor((v - origin) / tile) >> 0)), 0, (x$2 = pz.size, ((axis < 0 || axis >= x$2.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$2.$array[x$2.$offset + axis])) - 1 >> 0));
-			_i++;
-		}
-		return pos;
-	};
-	Puzzle.prototype.computePosition = function(coord) { return this.$val.computePosition(coord); };
-	Puzzle.ptr.prototype.computePositionEdge = function(coord) {
-		var _i, _ref, _tmp, _tmp$1, _tmp$2, _tmp$3, ax, belowDiag, belowInvDiag, coord, delta, dx, dy, edge, i, pos, pz, ratio, x, x$1, x$2, x$3;
-		pz = this;
-		pos = pz.computePosition(coord);
-		delta = new sliceType$1([0, 0]);
-		_ref = pos;
-		_i = 0;
-		while (true) {
-			if (!(_i < _ref.$length)) { break; }
-			ax = _i;
-			i = ((_i < 0 || _i >= _ref.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref.$array[_ref.$offset + _i]);
-			((ax < 0 || ax >= delta.$length) ? ($throwRuntimeError("index out of range"), undefined) : delta.$array[delta.$offset + ax] = ((ax < 0 || ax >= coord.$length) ? ($throwRuntimeError("index out of range"), undefined) : coord.$array[coord.$offset + ax]) - (x = pz.dstOrigin, ((ax < 0 || ax >= x.$length) ? ($throwRuntimeError("index out of range"), undefined) : x.$array[x.$offset + ax])) - ((i) + 0.5) * (x$1 = pz.dstTile, ((ax < 0 || ax >= x$1.$length) ? ($throwRuntimeError("index out of range"), undefined) : x$1.$array[x$1.$offset + ax])));
-			_i++;
-		}
-		edge = 0;
-		_tmp = (0 >= delta.$length ? ($throwRuntimeError("index out of range"), undefined) : delta.$array[delta.$offset + 0]);
-		_tmp$1 = (1 >= delta.$length ? ($throwRuntimeError("index out of range"), undefined) : delta.$array[delta.$offset + 1]);
-		dx = _tmp;
-		dy = _tmp$1;
-		ratio = (x$2 = pz.dstTile, (1 >= x$2.$length ? ($throwRuntimeError("index out of range"), undefined) : x$2.$array[x$2.$offset + 1])) / (x$3 = pz.dstTile, (0 >= x$3.$length ? ($throwRuntimeError("index out of range"), undefined) : x$3.$array[x$3.$offset + 0]));
-		_tmp$2 = dy < ratio * dx;
-		_tmp$3 = dy < -ratio * dx;
-		belowDiag = _tmp$2;
-		belowInvDiag = _tmp$3;
-		if (belowDiag && belowInvDiag) {
-			edge = 2;
-		} else if (belowDiag && !belowInvDiag) {
-			edge = 1;
-		} else if (!belowDiag && belowInvDiag) {
-			edge = 3;
-		}
-		return [pos, edge];
-	};
-	Puzzle.prototype.computePositionEdge = function(coord) { return this.$val.computePositionEdge(coord); };
-	Puzzle.ptr.prototype.recompute = function() {
-		var _r$1, _r$2, _tmp, _tmp$1, _tmp$2, _tmp$3, _tmp$4, _tmp$5, _tmp$6, _tmp$7, cols, ctx$1, dh, dth, dtw, dw, dx0, dy0, h, margin, pz, rows, scale, sh, sw, w, x, x$1, x$2, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r$1 = $f._r$1; _r$2 = $f._r$2; _tmp = $f._tmp; _tmp$1 = $f._tmp$1; _tmp$2 = $f._tmp$2; _tmp$3 = $f._tmp$3; _tmp$4 = $f._tmp$4; _tmp$5 = $f._tmp$5; _tmp$6 = $f._tmp$6; _tmp$7 = $f._tmp$7; cols = $f.cols; ctx$1 = $f.ctx$1; dh = $f.dh; dth = $f.dth; dtw = $f.dtw; dw = $f.dw; dx0 = $f.dx0; dy0 = $f.dy0; h = $f.h; margin = $f.margin; pz = $f.pz; rows = $f.rows; scale = $f.scale; sh = $f.sh; sw = $f.sw; w = $f.w; x = $f.x; x$1 = $f.x$1; x$2 = $f.x$2; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		pz = this;
-		_tmp = (x = pz.size, (0 >= x.$length ? ($throwRuntimeError("index out of range"), undefined) : x.$array[x.$offset + 0]));
-		_tmp$1 = (x$1 = pz.size, (1 >= x$1.$length ? ($throwRuntimeError("index out of range"), undefined) : x$1.$array[x$1.$offset + 1]));
-		cols = _tmp;
-		rows = _tmp$1;
-		_tmp$2 = (canvas.Width());
-		_tmp$3 = (canvas.Height());
-		w = _tmp$2;
-		h = _tmp$3;
-		_tmp$4 = (pz.image.Width());
-		_tmp$5 = (pz.image.Height());
-		sw = _tmp$4;
-		sh = _tmp$5;
-		margin = math.Min(marginPercent * w, marginPercent * h);
-		scale = math.Min((w - 2 * margin) / sw, (h - 2 * margin) / sh);
-		_tmp$6 = math.Round((w - sw * scale) / 2);
-		_tmp$7 = math.Round((h - sh * scale) / 2);
-		dx0 = _tmp$6;
-		dy0 = _tmp$7;
-		dtw = math.Round(sw * scale / (cols));
-		dth = math.Round(sh * scale / (rows));
-		dw = dtw * (cols);
-		dh = dth * (rows);
-		pz.dstOrigin = new sliceType$1([dx0, dy0]);
-		pz.dstTile = new sliceType$1([dtw, dth]);
-		pz.dstSize = new sliceType$1([dw, dh]);
-		$r = offscreen.SetWidth(((dw >> 0))); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = offscreen.SetHeight(((dh >> 0))); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		_r$1 = offscreen.GetContext2d(); /* */ $s = 3; case 3: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
-		ctx$1 = _r$1;
-		_r$2 = $clone(ctx$1.Value, js.Value).Call("drawImage", new sliceType$4([(x$2 = pz.image.BasicHTMLElement.BasicElement.BasicNode.Underlying(), new x$2.constructor.elem(x$2)), new $Int(0), new $Int(0), new $Float64(sw), new $Float64(sh), new $Int(0), new $Int(0), new $Float64(dw), new $Float64(dh)])); /* */ $s = 4; case 4: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
-		_r$2;
-		$s = -1; return;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: Puzzle.ptr.prototype.recompute }; } $f._r$1 = _r$1; $f._r$2 = _r$2; $f._tmp = _tmp; $f._tmp$1 = _tmp$1; $f._tmp$2 = _tmp$2; $f._tmp$3 = _tmp$3; $f._tmp$4 = _tmp$4; $f._tmp$5 = _tmp$5; $f._tmp$6 = _tmp$6; $f._tmp$7 = _tmp$7; $f.cols = cols; $f.ctx$1 = ctx$1; $f.dh = dh; $f.dth = dth; $f.dtw = dtw; $f.dw = dw; $f.dx0 = dx0; $f.dy0 = dy0; $f.h = h; $f.margin = margin; $f.pz = pz; $f.rows = rows; $f.scale = scale; $f.sh = sh; $f.sw = sw; $f.w = w; $f.x = x; $f.x$1 = x$1; $f.x$2 = x$2; $f.$s = $s; $f.$r = $r; return $f;
-	};
-	Puzzle.prototype.recompute = function() { return this.$val.recompute(); };
 	fmod = function(m, n) {
 		var m, n;
 		while (true) {
@@ -33026,14 +33297,14 @@ $packages["."] = (function() {
 		_r$5 = $clone(_r$4, js.Value).Get("pageY"); /* */ $s = 5; case 5: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
 		_r$6 = $clone(_r$5, js.Value).Float(); /* */ $s = 6; case 6: if($c) { $c = false; _r$6 = _r$6.$blk(); } if (_r$6 && _r$6.$blk !== undefined) { break s; }
 		pageY = _r$6;
-		$s = -1; return new sliceType$1([pageX * ratio, pageY * ratio]);
+		$s = -1; return new sliceType$3([pageX * ratio, pageY * ratio]);
 		/* */ } return; } if ($f === undefined) { $f = { $blk: pageXY }; } $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f.e = e; $f.pageX = pageX; $f.pageY = pageY; $f.ratio = ratio; $f.$s = $s; $f.$r = $r; return $f;
 	};
-	ptrType$3.methods = [{prop: "offset", name: "offset", pkg: ".", typ: $funcType([], [sliceType$1, sliceType$1], false)}, {prop: "cutOff", name: "cutOff", pkg: ".", typ: $funcType([], [$Bool], false)}, {prop: "move", name: "move", pkg: ".", typ: $funcType([sliceType$1], [], false)}, {prop: "apply", name: "apply", pkg: ".", typ: $funcType([], [], false)}];
-	ptrType$2.methods = [{prop: "Animate", name: "Animate", pkg: "", typ: $funcType([$Float64], [$Bool], false)}, {prop: "RotateRow", name: "RotateRow", pkg: "", typ: $funcType([$Int, $Int], [], false)}, {prop: "RotateCol", name: "RotateCol", pkg: "", typ: $funcType([$Int, $Int], [], false)}, {prop: "Rotate", name: "Rotate", pkg: "", typ: $funcType([$Int, $Int, $Int], [], false)}, {prop: "computePosition", name: "computePosition", pkg: ".", typ: $funcType([sliceType$1], [sliceType$2], false)}, {prop: "computePositionEdge", name: "computePositionEdge", pkg: ".", typ: $funcType([sliceType$1], [sliceType$2, $Int], false)}, {prop: "recompute", name: "recompute", pkg: ".", typ: $funcType([], [], false)}];
-	dragState.init(".", [{prop: "pz", name: "pz", embedded: false, exported: false, typ: ptrType$2, tag: ""}, {prop: "t0", name: "t0", embedded: false, exported: false, typ: $Int64, tag: ""}, {prop: "coord0", name: "coord0", embedded: false, exported: false, typ: sliceType$1, tag: ""}, {prop: "coord1", name: "coord1", embedded: false, exported: false, typ: sliceType$1, tag: ""}, {prop: "pos", name: "pos", embedded: false, exported: false, typ: sliceType$2, tag: ""}, {prop: "axis", name: "axis", embedded: false, exported: false, typ: $Int, tag: ""}]);
-	image.init(".", [{prop: "name", name: "name", embedded: false, exported: false, typ: $String, tag: ""}, {prop: "min", name: "min", embedded: false, exported: false, typ: sliceType$2, tag: ""}, {prop: "max", name: "max", embedded: false, exported: false, typ: sliceType$2, tag: ""}]);
-	Puzzle.init(".", [{prop: "image", name: "image", embedded: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "size", name: "size", embedded: false, exported: false, typ: sliceType$2, tag: ""}, {prop: "offsets", name: "offsets", embedded: false, exported: false, typ: sliceType$5, tag: ""}, {prop: "animate", name: "animate", embedded: false, exported: false, typ: sliceType$7, tag: ""}, {prop: "state", name: "state", embedded: false, exported: false, typ: sliceType$2, tag: ""}, {prop: "moves", name: "moves", embedded: false, exported: false, typ: $Int, tag: ""}, {prop: "completed", name: "completed", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "interactive", name: "interactive", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "showGrid", name: "showGrid", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "pendingSound", name: "pendingSound", embedded: false, exported: false, typ: $String, tag: ""}, {prop: "dstOrigin", name: "dstOrigin", embedded: false, exported: false, typ: sliceType$1, tag: ""}, {prop: "dstTile", name: "dstTile", embedded: false, exported: false, typ: sliceType$1, tag: ""}, {prop: "dstSize", name: "dstSize", embedded: false, exported: false, typ: sliceType$1, tag: ""}]);
+	ptrType$3.methods = [{prop: "offset", name: "offset", pkg: ".", typ: $funcType([], [sliceType$3, sliceType$3], false)}, {prop: "cutOff", name: "cutOff", pkg: ".", typ: $funcType([], [$Bool], false)}, {prop: "move", name: "move", pkg: ".", typ: $funcType([sliceType$3], [], false)}, {prop: "apply", name: "apply", pkg: ".", typ: $funcType([], [], false)}];
+	ptrType$2.methods = [{prop: "RotateRow", name: "RotateRow", pkg: "", typ: $funcType([$Int, $Int], [], false)}, {prop: "RotateCol", name: "RotateCol", pkg: "", typ: $funcType([$Int, $Int], [], false)}, {prop: "Rotate", name: "Rotate", pkg: "", typ: $funcType([$Int, $Int, $Int], [], false)}, {prop: "computePosition", name: "computePosition", pkg: ".", typ: $funcType([sliceType$3], [sliceType$2], false)}, {prop: "computePositionEdge", name: "computePositionEdge", pkg: ".", typ: $funcType([sliceType$3], [sliceType$2, $Int], false)}, {prop: "recompute", name: "recompute", pkg: ".", typ: $funcType([], [], false)}, {prop: "animateOffsets", name: "animateOffsets", pkg: ".", typ: $funcType([$Float64], [$Bool], false)}];
+	dragState.init(".", [{prop: "pz", name: "pz", embedded: false, exported: false, typ: ptrType$2, tag: ""}, {prop: "t0", name: "t0", embedded: false, exported: false, typ: $Int64, tag: ""}, {prop: "coord0", name: "coord0", embedded: false, exported: false, typ: sliceType$3, tag: ""}, {prop: "coord1", name: "coord1", embedded: false, exported: false, typ: sliceType$3, tag: ""}, {prop: "pos", name: "pos", embedded: false, exported: false, typ: sliceType$2, tag: ""}, {prop: "axis", name: "axis", embedded: false, exported: false, typ: $Int, tag: ""}]);
+	image.init(".", [{prop: "path", name: "path", embedded: false, exported: false, typ: $String, tag: ""}, {prop: "min", name: "min", embedded: false, exported: false, typ: $Int, tag: ""}, {prop: "max", name: "max", embedded: false, exported: false, typ: $Int, tag: ""}]);
+	Puzzle.init(".", [{prop: "image", name: "image", embedded: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "size", name: "size", embedded: false, exported: false, typ: sliceType$2, tag: ""}, {prop: "offsets", name: "offsets", embedded: false, exported: false, typ: sliceType$5, tag: ""}, {prop: "animate", name: "animate", embedded: false, exported: false, typ: sliceType$7, tag: ""}, {prop: "state", name: "state", embedded: false, exported: false, typ: sliceType$2, tag: ""}, {prop: "moves", name: "moves", embedded: false, exported: false, typ: $Int, tag: ""}, {prop: "showGrid", name: "showGrid", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "completed", name: "completed", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "interactive", name: "interactive", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "pendingSound", name: "pendingSound", embedded: false, exported: false, typ: $String, tag: ""}, {prop: "dstOrigin", name: "dstOrigin", embedded: false, exported: false, typ: sliceType$3, tag: ""}, {prop: "dstTile", name: "dstTile", embedded: false, exported: false, typ: sliceType$3, tag: ""}, {prop: "dstSize", name: "dstSize", embedded: false, exported: false, typ: sliceType$3, tag: ""}]);
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -33047,22 +33318,33 @@ $packages["."] = (function() {
 		offscreen = ptrType.nil;
 		ctx = ptrType$1.nil;
 		currentPuzzle = ptrType$2.nil;
-		marginPercent = 0.1;
-		animateSlope = 2;
-		animateScale = 3000;
+		marginPercent = 0.15;
+		maxInnerAspect = 2;
+		maxFullscreenWidth = 960;
 		maxAnimationLeft = 5;
-		dragThresholdPx = 8;
+		animateSlope = 2;
+		animateScale = 5000;
+		dragThresholdPx = 10;
 		dragBias = 0.4;
-		dragBiasMs = new $Int64(0, 1000);
+		dragBiasMs0 = new $Int64(0, 300);
+		dragBiasMs1 = new $Int64(0, 900);
 		dragClickMs = new $Int64(0, 300);
-		pixelsPerScrollStep = 140;
-		shuffleRounds = 0;
+		wheelStepPx = 140;
+		shuffleTime = new time.Duration(0, 1000000000);
+		defaultShuffleRounds = 6;
 		moveSound = new sliceType(["click_2", "click_1"]);
+		playSoundAt = 0.15;
 		_r = dom.GetWindow().Document(); /* */ $s = 7; case 7: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 		qs = $methodVal(_r, "QuerySelector");
-		lock = false;
+		redrawPending = false;
 		instantRedraw = false;
+		shuffleRounds = 0;
+		shufflePending = false;
+		shuffleStart = $clone(time.Now(), time.Time);
+		startTime = $clone(time.Now(), time.Time);
 		prevTime = $clone(time.Now(), time.Time);
+		images = new sliceType$1([new image.ptr("https://source.unsplash.com/collection/9440706/%vx%v", 3, 6)]);
+		rotateAudio = $makeMap($String.keyFor, [{ k: "click_1", v: new sliceType$2([3, 0]) }, { k: "click_2", v: new sliceType$2([3, 0]) }]);
 		/* */ if ($pkg === $mainPkg) { $s = 8; continue; }
 		/* */ $s = 9; continue;
 		/* if ($pkg === $mainPkg) { */ case 8:
