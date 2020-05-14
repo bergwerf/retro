@@ -5,6 +5,7 @@ date:        2013-06-01
 categories:  projects
 author:      Herman Bergwerf
 ---
+
 Drive3D is a Google Drive app which can display OBJ files in your browser,
 Drive3D is made using Three.js.
 
@@ -17,4 +18,6 @@ set the background (clear) color, the light color and the light intensity. You
 can even embed the OBJ file into your website by making the folder where the OBJ
 file is located public, and pasting the embed code into your website!
 
-Drive3D is available in the [Chrome Web Store](https://chrome.google.com/webstore/detail/drive3d/nhcndmbdddjkjghhhjnlgfbolioepgkn) or you can [Launch Drive3D](https://drive3d.hermanbergwerf.com) directly.
+*As of 2020 this program is no longer compatible with the Google Drive API.
+Its source code can still be found at
+[GitHub](http://github.com/bergwerf/drive3d).*
