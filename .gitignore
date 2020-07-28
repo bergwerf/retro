@@ -2,6 +2,7 @@ _site
 .sass-cache
 .jekyll-metadata
 cruzzle2/packages
+Gemfile.lock
 
 #################
 # Linux.gitignore
