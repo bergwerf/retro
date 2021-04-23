@@ -2,7 +2,6 @@
 layout: home
 title: Herman's weblog
 ---
-Welcome to my blog! You can find some old posts here. Most newer stuff is on my 
-GitHub account @bergwerf. To contact me send an email to post at hbergwerf dot 
-nl. I currently live in Nijmegen where I study at Radboud University (the MFOCS 
-specialization).
+Welcome! You can find some old posts here. There is also some public code on my 
+GitHub account @bergwerf. Feel free to contact me via post at hbergwerf dot nl.
+I currently live in Nijmegen where I study mathematics and computer science.
