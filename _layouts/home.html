@@ -3,7 +3,7 @@ layout: page
 ---
 
 <div id="digital-clock">
-  <span id="time"><span id="hours">88</span><span id="time-colon">:</span><span id="minutes">88</span><span id="say-time">SAY</span></span>
+  <span id="time"><span id="hours">88</span><span id="time-colon">:</span><span id="minutes">88</span></span>
 </div>
 <script type="text/javascript" src="/speak/Speak.js"></script>
 <script type="text/javascript" src="/speak/sam.js"></script>
@@ -32,7 +32,7 @@ layout: page
     return '';
   }
 
-  document.getElementById('say-time').addEventListener('click', function(e) {
+  document.getElementById('time').addEventListener('click', function(e) {
     e.preventDefault();
     var d = new Date();
     var h = d.getHours();

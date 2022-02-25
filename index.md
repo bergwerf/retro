@@ -1,9 +1,9 @@
 ---
 layout: home
-title: Herman's weblog
+title: Herman Bergwerf
 ---
-Welcome! There is nothing here (yet) but you can find some public code on my 
-GitHub account @bergwerf. Lately my programming work is mostly focussed on 
-formal verification of mathematics. Feel free to contact me via post at 
-hbergwerf dot nl. I currently live in Nijmegen where I study mathematics and 
-computer science.
+Welcome! My name is Herman and this is my webpage. My professional activities 
+include programming and graphical design. You can find some of my public code 
+on GitHub @bergwerf. I live in Nijmegen where I study theoretical computer 
+science. Lately I have been involved with formal logic and interactive proof 
+assistants. Feel free to contact me via post at hbergwerf dot nl.
