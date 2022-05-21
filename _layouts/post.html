@@ -4,9 +4,9 @@ layout: page
 
 <div class="neon-box post-box">
   <p>
-    <a class="home-link" href="/">&crarr; Return to index</a>
+    <a class="home-link" href="{{ '/' | relative_url }}">&crarr; Return to index</a>
     <span class="page-date">{{ page.date | date: "%b %-d, %Y" }}</span>
   </p>
   {{ content }}
-  <p><a class="home-link" href="/">&crarr; Return to index</a></p>
+  <p><a class="home-link" href="{{ '/' | relative_url }}">&crarr; Return to index</a></p>
 </div>
